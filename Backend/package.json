@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for Blog Project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config --experimental-json-modules ./src/index.js"
+  },
+  "keywords": [
+    "Blog",
+    "firstProject"
+  ],
+  "author": "Manav Kushwaha",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
