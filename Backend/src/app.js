@@ -22,6 +22,7 @@ app.use(cors({
 
 app.use(cookieParser())
 
+
 //routes handling
 
 import userRoutes from './routes/user.routes.js'
@@ -29,6 +30,11 @@ import blogRoutes from './routes/blog.routes.js'
 
 app.use('/api/v1/user',userRoutes)
 app.use('/api/v1/blog',blogRoutes)
+app.post("/hello",function(req,res){
+    res.json({
+        key : "maanv"
+    })
+})
 
 
 export {

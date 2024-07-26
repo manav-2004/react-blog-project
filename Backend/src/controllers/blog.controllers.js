@@ -2,6 +2,7 @@ import {asyncHandler} from '../utils/asyncHandler.js'
 import {ApiError} from '../utils/ApiError.js'
 import {ApiResponse} from '../utils/ApiResponse.js'
 import {Blog} from '../models/blog.model.js'
+import { User } from '../models/user.model.js'
 import {deleteFromCloudinary, uploadOnCloudinary} from '../utils/cloudinary.js'
 
 
@@ -82,6 +83,21 @@ const addBlog = asyncHandler(async(req, res)=>{
         throw new ApiError(500,"could not upload your blog")
     }
 
+    const updatedUser = await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $push : {
+                blogs : blog._id
+            }
+        },
+        {
+            new : true
+        }
+    )
+    if (!updatedUser){
+        throw new ApiError(500,"could not update user's blogs")
+    }
+
     res.status(201)
     .json(
         new ApiResponse(201,blog,"blog created successfully")
@@ -97,7 +113,25 @@ const deleteBlog = asyncHandler(async(req, res)=>{
         throw new ApiError(400,"Blog id is required")
     }
 
-    await Blog.findByIdAndDelete(id)
+    const deleted = await Blog.findByIdAndDelete(id)
+
+    if (!deleted){
+        throw new ApiError(404,"couldn't find blog with given")
+    }
+
+    await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $pull : {
+                blogs : id
+            }
+        },
+        {
+            new : true
+        }
+
+    )
+
 
     res.status(200).json(200,{},"blog deleted")
 })
@@ -132,7 +166,7 @@ const toggleStatus = asyncHandler(async(req, res)=>{
 
 
     if (!updatedStatus){
-        throw new ApiError(500, "server error on updating status")
+            throw new ApiError(404,"couldn't find blog with given id")
     }
 
     res.staus(200)
@@ -167,6 +201,11 @@ const editBlog = asyncHandler(async(req, res)=>{
         }
     )
 
+    
+    if (!updatedData){
+        throw new ApiError(404,"couldn't find blog with given id")
+    }
+
     res.status(200)
     .json(
         new ApiResponse(200,{},"Blog updated successfully")
@@ -191,8 +230,12 @@ const editBlogImage = asyncHandler(async(req, res)=>{
     const image = await uploadOnCloudinary(localPath)
 
     const oldData = await Blog.findById(id)
+    
+    if (!oldData){
+        throw new ApiError(404,"couldn't find blog with given id")
+    }
 
-    await deleteFromCloudinary(oldData.featuredImage)
+    await deleteFromCloudinary(oldData?.featuredImage)
 
     await Blog.findByIdAndUpdate(
         id,
