@@ -57,12 +57,13 @@ const addBlog = asyncHandler(async(req, res)=>{
     const {title, content, status} = req.body
 
     if (
-        [title,content,status].some((field)=>field.trim()==="")
+        [title,content,status].some((field)=>field === undefined)
     ){
         throw new ApiError(400, "All fields are required")
     }
 
     const featuredImageLocalPath = req.file?.path
+
     if (!featuredImageLocalPath){
         throw new ApiError(400,"featured image is required")
     }
@@ -133,7 +134,10 @@ const deleteBlog = asyncHandler(async(req, res)=>{
     )
 
 
-    res.status(200).json(200,{},"blog deleted")
+    res.status(200)
+    .json(
+        new ApiResponse(200,{},"blog deleted")
+    )
 })
 
 const toggleStatus = asyncHandler(async(req, res)=>{
@@ -142,21 +146,20 @@ const toggleStatus = asyncHandler(async(req, res)=>{
 
     if (!id){
         throw new ApiError(400,"Blog id is required")
+        
+    }
+
+    const user = await Blog.findById(id)
+
+    if (!user){
+        throw new ApiError(404,"couldn't find blog with given id")
     }
 
     const updatedStatus = await Blog.findByIdAndUpdate(
         id,
         {
            $set : {
-                status : {
-                    $cond : {
-                        if : {
-                            $eq : ["$status",true]
-                        },
-                        then : false,
-                        else : true
-                    }
-                }
+                status : !user.status
            }
         },
         {
@@ -164,12 +167,7 @@ const toggleStatus = asyncHandler(async(req, res)=>{
         }
     ).select("-content -featuredImage -owner")
 
-
-    if (!updatedStatus){
-            throw new ApiError(404,"couldn't find blog with given id")
-    }
-
-    res.staus(200)
+    res.status(200)
     .json(
         new ApiResponse(200, updatedStatus, "status updated Successfully")
     )
@@ -178,23 +176,20 @@ const toggleStatus = asyncHandler(async(req, res)=>{
 
 const editBlog = asyncHandler(async(req, res)=>{
 
-    let {id,title,content} = req.body
+    let data = req.body
+
+    const id = data?.id
 
     if (!id){
         throw new ApiError(400,"Blog id is required")
     }
     
-    if (!title && !content){
-        throw new ApiError(400,"title and content is required")
-    }
-
+    delete data.id
+    
     const updatedData = await Blog.findByIdAndUpdate(
         id,
         {
-            $set : {
-                title,
-                content
-            }
+            $set : data
         },
         {
             new : true

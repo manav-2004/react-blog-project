@@ -180,10 +180,12 @@ const refresh_tokens = asyncHandler(async(req, res)=>{
     }
 
     if (user.refreshToken !== incomingRefreshToken){
+        console.log(user.refreshToken)
+        console.log(incomingRefreshToken)
         throw new ApiError(401,"Refresh Token is expired")
     }
 
-    const {refreshToken, accessToken} = generateRefreshAndAccessToken(user._id)
+    const {refreshToken, accessToken} = await generateRefreshAndAccessToken(user._id)
 
     const options = {
         httpOnly : true,
@@ -191,8 +193,8 @@ const refresh_tokens = asyncHandler(async(req, res)=>{
     }
 
     res.status(200)
-    .cookie("accessToken",tokens.accessToken, options)
-    .cookie("refreshToken",tokens.refreshToken, options)
+    .cookie("accessToken",accessToken, options)
+    .cookie("refreshToken",refreshToken, options)
     .json(
         new ApiResponse(200,{
             refreshToken,
@@ -211,35 +213,23 @@ const changePassword = asyncHandler(async(req, res)=>{
     if (
         [oldPassword, newPassword].some(field=> field === undefined)
     ){
-        throw new ApiError(400,"Both fields are rquired")
+        throw new ApiError(400,"Both fields are required")
     }
     
     if (newPassword === ""){
-        throw new ApiError(400,"New passowrd can't be empty")
+        throw new ApiError(400,"New passowrd can not be empty")
     }
 
     const user = await User.findById(req.user._id)
 
-    const isPasswordCorrect = user.isPasswordCorrect(oldPassword)
+    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
 
     if (!isPasswordCorrect){
         throw new ApiError(400,"current password is not correct")
     }
 
-    const updated = await User.findByIdAndUpdate(
-        req.user._id,
-        {
-            $set : {
-                password : newPassword
-            }
-        },
-        {
-            new : true
-        }
-    )
-    if (!updated){
-        throw new ApiError(500,"could not change password")
-    }
+    user.password = newPassword
+    user.save()
 
     res.status(200)
     .json(
@@ -295,7 +285,9 @@ const updateAvatar = asyncHandler(async(req, res)=>{
 
 
     const oldUser = await User.findById(req.user._id).select("-password -refreshToken")
-    await deleteFromCloudinary(oldUser?.avatar)
+    if (oldUser.avatar){
+        await deleteFromCloudinary(oldUser?.avatar)
+    }
 
     const updatedUser = await User.findByIdAndUpdate(
         req.user._id,
@@ -326,7 +318,7 @@ const getMyBlogs = asyncHandler(async(req, res)=>{
 
         {
             $match : {
-                _id : mongoose.Types.ObjectId(req.user._id)
+                _id : new mongoose.Types.ObjectId(req.user._id)
             }
         },
         {

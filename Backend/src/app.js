@@ -30,11 +30,6 @@ import blogRoutes from './routes/blog.routes.js'
 
 app.use('/api/v1/user',userRoutes)
 app.use('/api/v1/blog',blogRoutes)
-app.post("/hello",function(req,res){
-    res.json({
-        key : "maanv"
-    })
-})
 
 
 export {
