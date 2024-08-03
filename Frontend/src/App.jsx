@@ -1,24 +1,69 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { Authorize } from "./services/auth.services"
+import {useDispatch} from 'react-redux'
+import { login, logout } from "./features/authSlice"
+import {Outlet, useLocation } from "react-router-dom"
+import { Footer, Header, Loader } from "./components"
+import { Profile } from "./pages"
+import { Bounce, ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css'
+import 'remixicon/fonts/remixicon.css'
 
 
+// The entire React component tree is reevaluated 
+// on route changes, allowing conditional logic to determine what is shown or hidden.
 function App() {
 
-  const [val , setVal] = useState("")
-  const [slug, setSlug] = useState("")
+  const [loading, setLoading] = useState(true)
 
-  const handleChange = (e)=>{
-    const data = e.target.value
-    const slugData = data.split(" ").join("-")
-    setVal(data)
-    setSlug(slugData)
-  }
+  const dispatch = useDispatch()
 
-  return (
-    <div className="bg-black h-screen w-full flex justify-center items-center gap-2 font-bold">
-      <input type="text"  value={val} onChange={handleChange} className="outline-none"/>
-      <input type="text" value={slug} readOnly className="outline-none"/>
+  const location = useLocation()
+
+  useEffect(()=>{
+
+    Authorize.getUser()
+    .then((res)=>{
+      dispatch(login({data : res.data}))
+    })
+    .catch((err)=>{
+      dispatch(logout())
+    })
+    .finally(()=>setLoading(false))
+
+  },[])
+
+  const renderHeaderAndFooter = (location.pathname === '/login')||(location.pathname === '/signUp')
+
+
+  return loading ? (
+      <Loader/>
+  ) : (
+    <div className="min-h-screen w-full font-bold font-mono relative">
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition: Bounce
+      />
+
+      <div className="w-full block">
+        {!renderHeaderAndFooter && <Header/>}
+        <main>
+          <Outlet/>
+          {/* <Profile/> */}
+        </main>
+        {!renderHeaderAndFooter && <Footer/>}
+      </div>
     </div>
   )
-}
 
+}
 export default App

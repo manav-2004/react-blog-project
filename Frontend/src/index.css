@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer utilities{
+    @keyframes rotation {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .loader {
+      @apply w-12 h-12 border-4 border-dotted border-cyan-600 rounded-full inline-block relative box-border;
+      animation: rotation 2s linear infinite;
+    }
+    .topBox {
+      @apply flex flex-col gap-2 items-start justify-center
+    }
+    .buttons {
+      @apply font-mono font-bold active:text-sm rounded-lg border-[3px] border-transparent hover:border-cyan-300 px-3 py-[4px] bg-cyan-500 text-white outline-none text-[15px]
+    }
+    .buttons-div {
+      @apply h-[42px] flex justify-center items-center
+    }
+}
+
