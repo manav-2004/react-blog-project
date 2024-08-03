@@ -117,6 +117,13 @@ const loginUser = asyncHandler(async(req, res)=>{
         throw new ApiError(404,"user not found")
     }
 
+    const isPasswordCorrect = await user.isPasswordCorrect(password)
+    console.log(isPasswordCorrect)
+
+    if (!isPasswordCorrect){
+        throw new ApiError(400, "password is wrong")
+    }
+
     const tokens = await generateRefreshAndAccessToken(user._id)
 
     const options = {
@@ -124,14 +131,15 @@ const loginUser = asyncHandler(async(req, res)=>{
         secure : true
     }
 
+    delete user?.password
+    user.accessToken = tokens?.accessToken
+    user.refreshToken = tokens?.refreshToken
+
     res.status(200)
     .cookie("accessToken",tokens.accessToken, options)
     .cookie("refreshToken",tokens.refreshToken, options)
     .json(
-        new ApiResponse(200,{
-            refreshToken : tokens.refreshToken,
-            accessToken : tokens.accessToken
-        },"loggedIn successfully")
+        new ApiResponse(200,user,"loggedIn successfully")
     )
 
 })
@@ -252,6 +260,17 @@ const updateDetails = asyncHandler(async(req, res)=>{
     const id = req.user._id
     const fields = req.body
 
+    const usernameCheck = await User.findOne({username : fields?.username})
+    if (usernameCheck && !usernameCheck?._id.equals(id)){
+        throw new ApiError(400,"Username already exist")
+    }
+    
+    const emailCheck = await User.findOne({email : fields?.email})
+    if (emailCheck && !emailCheck?._id.equals(id)){
+        throw new ApiError(400,"Email already exist")
+    }
+
+
     const updatedUser = await User.findByIdAndUpdate(
         id,
         {
@@ -299,7 +318,7 @@ const updateAvatar = asyncHandler(async(req, res)=>{
         {
             new : true
         }
-    )
+    ).select("-password -refreshToken")
 
     if (!updatedUser){
         throw new ApiError(500,"could not update user's avatar")
@@ -307,50 +326,11 @@ const updateAvatar = asyncHandler(async(req, res)=>{
 
     res.status(200)
     .json(
-        new ApiResponse(200,{},"image uploaded successfully")
+        new ApiResponse(200,updatedUser,"image uploaded successfully")
     )
 
 })
 
-const getMyBlogs = asyncHandler(async(req, res)=>{
-
-    const response = await User.aggregate([
-
-        {
-            $match : {
-                _id : new mongoose.Types.ObjectId(req.user._id)
-            }
-        },
-        {
-            $lookup : {
-                from : "blogs",
-                localField : "blogs",
-                foreignField : "_id",
-                as : "blogs"
-            }
-        },
-        {
-            $project : {
-                fullname : 1,
-                email : 1,
-                username : 1,
-                avatar : 1,
-                blogs : 1
-
-            }
-        }
-    ])
-
-    if (!response.length){
-        throw new ApiError(500, "Error on retrieving blogs from database")
-    }
-
-    res.status(200)
-    .json(
-        new ApiResponse(200,response[0],"Blogs sent successfully")
-    )
-
-})
 
 
 export{
@@ -359,7 +339,6 @@ export{
     logoutUser,
     refresh_tokens,
     changePassword,
-    getMyBlogs,
     getUser,
     updateAvatar,
     updateDetails

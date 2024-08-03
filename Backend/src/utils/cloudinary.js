@@ -34,10 +34,10 @@ const uploadOnCloudinary = async (localFilePath)=>{
 
     } catch (error) {
 
+        fs.unlinkSync(localFilePath)
         if (error instanceof ApiError){
             throw error
         }
-        fs.unlinkSync(localFilePath)
         throw new ApiError(500,`error on uploading to cloudinary - ${error}`)
     }
 }

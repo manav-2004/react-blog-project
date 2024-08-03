@@ -6,7 +6,6 @@ import {
         logoutUser,
         refresh_tokens,
         changePassword,
-        getMyBlogs,
         getUser,
         updateAvatar,
         updateDetails
@@ -18,7 +17,7 @@ const router = Router()
 
 router.route("/register").post(upload.single("avatar"),registerUser)
 
-router.route("/login").get(loginUser)
+router.route("/login").post(loginUser)
 
 //secured routes
 
@@ -27,8 +26,6 @@ router.route("/logout").get(isLoggedIn,logoutUser)
 router.route("/refreshTokens").get(isLoggedIn,refresh_tokens)
 
 router.route("/changePassword").post(isLoggedIn,changePassword)
-
-router.route("/getMyBlogs").get(isLoggedIn,getMyBlogs)
 
 router.route("/getUser").get(isLoggedIn,getUser)
 

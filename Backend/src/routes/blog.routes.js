@@ -5,13 +5,19 @@ import {
     deleteBlog,
     toggleStatus,
     editBlog,
-    editBlogImage
+    editBlogImage,
+    getMyBlogs,
+    getABlog
 } from '../controllers/blog.controllers.js'
 
 import {isLoggedIn} from '../middlewares/auth.middleware.js'
 import {upload} from '../middlewares/multer.middleware.js'
 
 const router = Router()
+
+router.route("/getMyBlogs").get(isLoggedIn,getMyBlogs)
+
+router.route("/getABlog").post(isLoggedIn,getABlog)
 
 router.route("/getAllBlogs").get(isLoggedIn,getAllBlogs)
 
