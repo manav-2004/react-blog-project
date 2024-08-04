@@ -5,7 +5,7 @@ class AuthServices{
 
     constructor(){
         
-        this.api = new Api("http://localhost:3000/api/v1/user")
+        this.api = new Api(import.meta.env.VITE_USER_API_BACKEND)
     }
 
     async register(data, file=undefined){

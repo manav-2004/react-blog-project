@@ -4,7 +4,8 @@
   "description": "Backend for Blog Project",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules ./src/index.js"
+    "dev": "nodemon -r dotenv/config --experimental-json-modules ./src/index.js",
+    "build" : "npm i"
   },
   "type": "module",
   "keywords": [

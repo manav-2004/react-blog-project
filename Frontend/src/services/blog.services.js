@@ -3,7 +3,7 @@ import {Api} from '../api/Api'
 class BlogServices{
 
     constructor(){
-        this.api = new Api("http://localhost:3000/api/v1/blog")
+        this.api = new Api(import.meta.env.VITE_BLOG_API_BACKEND)
     }
 
     async getMyBlogs(){
