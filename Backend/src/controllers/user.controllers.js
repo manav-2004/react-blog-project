@@ -128,7 +128,8 @@ const loginUser = asyncHandler(async(req, res)=>{
 
     const options = {
         httpOnly : true,
-        secure : true
+        secure : true,
+        sameSite : 'None'
     }
 
     delete user?.password
@@ -197,7 +198,8 @@ const refresh_tokens = asyncHandler(async(req, res)=>{
 
     const options = {
         httpOnly : true,
-        secure : true
+        secure : true,
+        sameSite : 'None'
     }
 
     res.status(200)
