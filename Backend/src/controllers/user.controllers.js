@@ -129,7 +129,6 @@ const loginUser = asyncHandler(async(req, res)=>{
     const options = {
         httpOnly : true,
         secure : true,
-        sameSite : 'None'
     }
 
     delete user?.password
@@ -332,8 +331,6 @@ const updateAvatar = asyncHandler(async(req, res)=>{
     )
 
 })
-
-
 
 export{
     registerUser,
