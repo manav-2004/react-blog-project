@@ -127,10 +127,12 @@ const loginUser = asyncHandler(async(req, res)=>{
     const tokens = await generateRefreshAndAccessToken(user._id)
 
     const options = {
-        httpOnly : true,
-        secure : true,
-        sameSite : 'None'
-    }
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+        domain: 'react-blog-project.onrender.com',
+        path: '/',
+      };
 
     delete user?.password
     user.accessToken = tokens?.accessToken
@@ -161,9 +163,17 @@ const logoutUser = asyncHandler(async(req, res)=>{
         throw new ApiError(500,"could not logout")
     }
 
+    const options = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+        domain: 'react-blog-project.onrender.com',
+        path: '/',
+      };
+
     res.status(200)
-    .clearCookie("accessToken")
-    .clearCookie("refreshToken")
+    .clearCookie("accessToken",options)
+    .clearCookie("refreshToken",options)
     .json(
         new ApiResponse(200,{},"user loged out succssfully")
     )
