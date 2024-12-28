@@ -4,6 +4,7 @@ import { Blog } from '../services/blog.services'
 import DialogBox from '../components/DialogBox'
 import { Blog as BlogServices } from '../services/blog.services'
 import {toast} from 'react-toastify'
+import { set } from 'react-hook-form'
 
 function MyPost() {
 
@@ -16,7 +17,6 @@ function MyPost() {
 
         Blog.getMyBlogs()
         .then((response)=>{
-            console.log(response.data.blogs)
             setAllBlogs(response.data.blogs)
             setLoading(false)
         })
@@ -46,6 +46,18 @@ function MyPost() {
         }
     }
 
+    const [scrollVal, setScrollVal] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+          setScrollVal(window.scrollY);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
 
   return loading ? (
     <div>
@@ -54,7 +66,7 @@ function MyPost() {
   ):(
     <div className={`p-8 min-h-screen`}>
         <Container extraCss='relative'>
-            {dialogBox && <DialogBox falseFn={()=>{activateDialogBox(false)}} trueFn={deletePost}/>}
+        {dialogBox && <DialogBox falseFn={()=>{activateDialogBox(false)}} trueFn={deletePost}/>}            
            {
             allBlogs.length === 0?
             (
@@ -73,6 +85,7 @@ function MyPost() {
                             parsedContent={blog.content}
                             key={blog._id}
                             deletePost={(id)=>{
+                                window.scrollTo(0,0)
                                 activateDialogBox(true)
                                 setDeletingPostId(id)
                             }}

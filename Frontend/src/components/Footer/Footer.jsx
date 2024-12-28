@@ -6,11 +6,11 @@ function Footer() {
   return (
     <div>
       <Container>
-        <div className='w-full h-64 flex gap-0 font-bold font-mono cursor-pointer border-t-[3px]'>
+        <div className='w-full h-64 flex gap-0 font-bold font-mono cursor-pointer border-t-[3px] max-sm:flex-col'>
           <div className='w-1/2 flex justify-center items-center'>
             <img src={logo} alt="logo" className='h-32 aspect-auto drop-shadow-xl' />
           </div>
-          <div className='w-3/4 flex gap-20 items-center justify-center'>
+          <div className='w-3/4 flex gap-20 items-center justify-center max-sm:flex-col'>
             <div className='topBox'>
               <h2 className='text-gray-400 mb-6'>Company</h2>
               <h2>Features</h2>
