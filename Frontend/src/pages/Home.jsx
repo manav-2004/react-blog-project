@@ -1,21 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Container from '../components/container/Container'
-import {useLocation} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
+import DialogBox from '../components/DialogBox'
 
-const menuItems = [
-  {
-    name: 'Home',
-    href: '#',
-  },
-  {
-    name: 'About',
-    href: '#',
-  },
-  {
-    name: 'Contact',
-    href: '#',
-  },
-]
 
 function Home() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
@@ -23,6 +10,8 @@ function Home() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
+
+  const navigate = useNavigate()
 
   return (
     <div>
@@ -35,7 +24,7 @@ function Home() {
                         <span className="mb-4 inline-block rounded-full bg-gray-50 px-3 py-1 text-xs font-semibold text-black">
                             OUR BLOG
                         </span>
-                        <h1 className="text-5xl font-bold">Latest news from our blog</h1>
+                        <h1 className="text-5xl font-bold">Your Voice, Amplified</h1>
                         </div>
                         <div className="my-18 -mx-4 flex flex-wrap px-4">
                         <div className="mb-12 w-full px-4 lg:mb-0 lg:w-1/2">
@@ -45,14 +34,12 @@ function Home() {
                                 src="https://plus.unsplash.com/premium_photo-1663852297654-56d979cf72d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8YmxvZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
                                 alt=""
                             />
-                            <span className="mb-5 block text-gray-500">Jul 20, 2023</span>
+                            <span className="mb-5 block text-gray-500 opacity-0">Jul 20, 2023</span>
                             <h4 className="mb-5 text-3xl font-semibold text-gray-900">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            A space to share your thoughts and connect with the world
                             </h4>
                             <p className="max-w-xl text-lg text-gray-500">
-                                Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit
-                                officia consequat duis enim velit mollit xercitation veniam consequat sunt
-                                nostrud amet.
+                            Welcome to your space for expression. Share your thoughts, connect with a global audience, and inspire meaningful conversations. Start your journey today and let your voice be heard!
                             </p>
                             </a>
                         </div>
@@ -64,9 +51,9 @@ function Home() {
                                 alt=""
                             />
                             <div className="my-4 pt-2 md:ml-6 md:mt-0">
-                                <span className="mb-2 block text-gray-500">Jul 20, 2022</span>
+                                <span className="mb-2 block text-gray-500 opacity-0">Jul 20, 2022</span>
                                 <h4 className="text-xl font-semibold text-gray-900">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                                Express yourself, inspire others, and make an impact.
                                 </h4>
                             </div>
                             </a>
@@ -77,9 +64,9 @@ function Home() {
                                 alt=""
                             />
                             <div className="my-4 pt-2 md:ml-6 md:mt-0">
-                                <span className="mb-2 block text-gray-500">Jul 20, 2022</span>
+                                <span className="mb-2 block text-gray-500 opacity-0">Jul 20, 2022</span>
                                 <h4 className="text-xl font-semibold text-gray-900">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                                Turning ideas into impactful stories that reach the world
                                 </h4>
                             </div>
                             </a>
@@ -90,9 +77,9 @@ function Home() {
                                 alt=""
                             />
                             <div className="my-4 pt-2 md:ml-6 md:mt-0">
-                                <span className="mb-2 block text-gray-500">Jul 20, 2022</span>
+                                <span className="mb-2 block text-gray-500 opacity-0">Jul 20, 2022</span>
                                 <h4 className="text-xl font-semibold text-gray-900">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                                A platform for thinkers, writers, and dreamers like you.
                                 </h4>
                             </div>
                             </a>
@@ -102,6 +89,7 @@ function Home() {
                         <button
                             type="button"
                             className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                            onClick={()=>{navigate("/all-blogs")}}
                         >
                             View All Posts
                         </button>

@@ -7,6 +7,7 @@ const Input = React.forwardRef(({
     className = "",
     labelClass = "",
     topDivClass = "w-full",
+    fn = ()=>{},
     ...props
 
 }, ref)=>{
@@ -20,7 +21,8 @@ const Input = React.forwardRef(({
                         </label>
             }
             <input type={type} id={id} className={`px-3 py-2 rounded-lg bg-white text-black outline-none
-                focus:bg-slate-50 duration-200 border border-gray-200 w-full  ${className}`} ref={ref} {...props}/>
+                focus:bg-slate-50 duration-200 border border-gray-200 w-full  
+                ${className}`} ref={ref} onChange={(e)=>{fn(e)}} {...props} />
         </div>
     )
 })

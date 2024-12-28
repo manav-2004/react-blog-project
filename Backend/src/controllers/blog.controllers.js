@@ -107,6 +107,7 @@ const addBlog = asyncHandler(async(req, res)=>{
     const featuredImageLocalPath = req.file?.path
 
     if (!featuredImageLocalPath){
+
         throw new ApiError(400,"featured image is required")
     }
 
@@ -219,7 +220,7 @@ const toggleStatus = asyncHandler(async(req, res)=>{
 
 const editBlog = asyncHandler(async(req, res)=>{
 
-    let data = req.body
+    let data = req.body//data would be an object
 
     const id = data?.id
 

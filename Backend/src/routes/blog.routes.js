@@ -17,9 +17,9 @@ const router = Router()
 
 router.route("/getMyBlogs").get(isLoggedIn,getMyBlogs)
 
-router.route("/getABlog").post(isLoggedIn,getABlog)
+router.route("/getABlog").post(getABlog)
 
-router.route("/getAllBlogs").get(isLoggedIn,getAllBlogs)
+router.route("/getAllBlogs").get(getAllBlogs)
 
 router.route("/addBlog").post(isLoggedIn,upload.single("featuredImage"),addBlog)
 

@@ -1,4 +1,9 @@
+import axios from 'axios';
 import {Api} from '../api/Api.js'
+
+const refreshPage = ()=>{
+    window.location.reload()
+}
 
 
 class AuthServices{
@@ -7,7 +12,7 @@ class AuthServices{
         
         this.api = new Api(import.meta.env.VITE_USER_API_BACKEND)
     }
-
+    
     async register(data, file=undefined){
         try {
 
@@ -62,7 +67,11 @@ class AuthServices{
             return response
             
         } catch (error) {
-            console.log("Error on fetching user")
+            if (error.response.data.statusCode == 401){
+                await this.refreshTokens()
+                await this.getUser()
+                refreshPage()
+            }
             throw error
         }
     }
@@ -86,6 +95,9 @@ class AuthServices{
             return response
 
         } catch (error) {
+            if (error.response.data.statusCode == 401){
+                refreshPage()
+            }
             console.log("Error on password change")
             throw error
         }
@@ -110,6 +122,9 @@ class AuthServices{
             return response
 
         } catch (error) {
+            if (error.response.data.statusCode == 401){
+                refreshPage()
+            }
             console.log("Error on updating details")
             throw error
         }
@@ -135,6 +150,9 @@ class AuthServices{
             return response
 
         } catch (error) {
+            if (error.response.data.statusCode == 401){
+                refreshPage()
+            }
             console.log("Error on updating avatar")
             throw error
         }

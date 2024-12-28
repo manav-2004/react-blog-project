@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Blog } from '../../services/blog.services'
 import { useForm } from 'react-hook-form'
@@ -21,6 +21,8 @@ function PostForm({post}) {
 
     const navigate = useNavigate()
     const userData = useSelector(state => state.auth.data)
+    const [image, setImage] = useState(null)
+    const [imageUrl, setImageUrl] = useState(post?.featuredImage || null)
 
     const dropDownOptions = [
         {
@@ -39,9 +41,8 @@ function PostForm({post}) {
 
             try {
                 
-                blogData.image[0]? await Blog.editImage(post._id,blogData.image[0]) : null
+                image? await Blog.editImage(post._id,image) : null
 
-                delete blogData.image
                 await Blog.editBlog(post._id, blogData)
                 
                 navigate(`/blog/${post._id}`)
@@ -54,9 +55,8 @@ function PostForm({post}) {
             //this is when i am newly creating a blog   
             try {
                 
-                const {image , ...restData} = blogData
 
-                const res = await Blog.addBlog(restData, image[0])
+                const res = await Blog.addBlog(blogData,image)
                 navigate(`/blog/${res.data._id}`)
 
             } catch (error) {
@@ -89,10 +89,16 @@ function PostForm({post}) {
         }
     },[watch, handleSlug, setValue])
 
+    const handleImage = (e)=>{
+        setImage(e.target.files[0]);
+        setImageUrl(URL.createObjectURL(e.target.files[0]));
+    }
+
+
   return (
     <Container>
-        <form onSubmit={handleSubmit(submit)} className='flex flex-wrap py-2 mt-12'>
-            <div className='w-2/3 border-r-[2px] px-6'>
+        <form onSubmit={handleSubmit(submit)} className='flex flex-wrap py-2 mt-12 max-md:flex-col'>
+            <div className='w-2/3 border-r-[2px] px-6 max-md:w-full'>
                 <Input
                     type = "text"
                     label = "title :"
@@ -123,17 +129,16 @@ function PostForm({post}) {
                     defaultValue={getValues('content')}
                 />
             </div>
-            <div className='w-1/3 px-4'>
+            <div className='w-1/3 px-4 max-md:w-full'>
                 <Input
                     type = "file"
                     label = "Featured Image :"
                     accept = "image/jpg, image/png, image/jpeg, image/gif"
-                    {...register("image",{
-                        required : !post
-                    })}
+                    fn={handleImage}
+                    required = {!post}
                 />
                 {
-                    post ? (<img src={post.featuredImage} className='rounded-lg mt-6 w-full aspect-auto'/>) : null
+                    imageUrl ? (<img src={imageUrl} className='rounded-lg mt-6 w-full aspect-auto'/>) : null
                 }
                 <Select
                     options = {dropDownOptions}

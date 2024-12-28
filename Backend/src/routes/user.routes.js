@@ -23,7 +23,7 @@ router.route("/login").post(loginUser)
 
 router.route("/logout").get(isLoggedIn,logoutUser)
 
-router.route("/refreshTokens").get(isLoggedIn,refresh_tokens)
+router.route("/refreshTokens").get(refresh_tokens)
 
 router.route("/changePassword").post(isLoggedIn,changePassword)
 

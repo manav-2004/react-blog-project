@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Card, Loader } from '../components'
 import { Blog } from '../services/blog.services'
+import user from "/user.jpg"
+import parse from 'html-react-parser'
+
 
 function AllPost() {
 
@@ -9,10 +12,10 @@ function AllPost() {
 
     useEffect(()=>{
 
+        window.scrollTo(0,0)
 
         Blog.getAllBlogs()
         .then((response)=>{
-            console.log(response.data.data)
             setAllBlogs(response.data.data)
             setLoading(false)
         })
@@ -38,14 +41,17 @@ return loading ? (
                 </div>
             )
             :
-            (<div className='flex flex-wrap gap-10'>
+            (<div className='flex flex-wrap gap-10 max-md:justify-center'>
                 {
                     allBlogs.map((blog)=>(
                         <Card
                             title={blog.title}
                             id = {blog._id}
                             image ={blog.featuredImage}
-                            ownerImage={blog.owner.avatar}
+                            ownerImage={blog.owner.avatar || user}
+                            parsedContent={blog.content}
+                            fullname={blog.owner.fullname.split(" ")[0]}
+                            key={blog._id}
                         />
                     ))
                 }

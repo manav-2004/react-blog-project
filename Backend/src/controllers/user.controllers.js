@@ -118,7 +118,6 @@ const loginUser = asyncHandler(async(req, res)=>{
     }
 
     const isPasswordCorrect = await user.isPasswordCorrect(password)
-    console.log(isPasswordCorrect)
 
     if (!isPasswordCorrect){
         throw new ApiError(400, "password is wrong")
@@ -130,8 +129,8 @@ const loginUser = asyncHandler(async(req, res)=>{
         httpOnly: true,
         secure: true,
         sameSite: 'None',
-        domain: 'react-blog-project.onrender.com',
-        path: '/',
+        // domain: 'react-blog-project.onrender.com',
+        // path: '/',
       };
 
     delete user?.password
@@ -167,8 +166,8 @@ const logoutUser = asyncHandler(async(req, res)=>{
         httpOnly: true,
         secure: true,
         sameSite: 'None',
-        domain: 'react-blog-project.onrender.com',
-        path: '/',
+        // domain: 'react-blog-project.onrender.com',
+        // path: '/',
       };
 
     res.status(200)
@@ -273,6 +272,8 @@ const updateDetails = asyncHandler(async(req, res)=>{
     const fields = req.body
 
     const usernameCheck = await User.findOne({username : fields?.username})
+    //if i found a username and that username id is not equal to current user id that means
+    //this username belongs to another user that is already taken.
     if (usernameCheck && !usernameCheck?._id.equals(id)){
         throw new ApiError(400,"Username already exist")
     }

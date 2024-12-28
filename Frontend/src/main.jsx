@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import {store} from "./store/store.js"
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Protected } from "./components"
-import {AddPost, AllPost, Blog, Contact, EditPost, Home, LogIn, MyPost, SignUp,Profile, ChangePassword} from "./pages"
+import {AddPost, AllPost, Blog,EditPost, Home, LogIn, MyPost, SignUp,Profile, ChangePassword} from "./pages"
 
 
 const router = createBrowserRouter([
@@ -51,12 +51,6 @@ const router = createBrowserRouter([
         )
       },
       {
-        path : "/contact",
-        element : (
-            <Contact/>
-        )
-      },
-      {
         path : "/add-blog",
         element : (
           <Protected authentication>
@@ -75,9 +69,7 @@ const router = createBrowserRouter([
       {
         path : "/all-blogs",
         element : (
-          <Protected authentication>
             <AllPost/>
-          </Protected>
         )
       },
       {

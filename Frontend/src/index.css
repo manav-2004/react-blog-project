@@ -20,7 +20,7 @@
       @apply flex flex-col gap-2 items-start justify-center
     }
     .buttons {
-      @apply font-mono font-bold active:text-sm rounded-lg border-[3px] border-transparent hover:border-cyan-300 px-3 py-[4px] bg-cyan-500 text-white outline-none text-[15px]
+      @apply font-mono font-bold active:text-sm rounded-lg outline-none text-[15px]
     }
     .buttons-div {
       @apply h-[42px] flex justify-center items-center

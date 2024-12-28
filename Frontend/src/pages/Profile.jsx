@@ -55,7 +55,7 @@ function Profile() {
   }
 
   const toggleEditing = ()=>{
-    setProfileEditing(true)
+    setProfileEditing(prev=>!prev)
     setFocus('fullname')
   }
 
@@ -89,7 +89,6 @@ function Profile() {
 
   }
 
-
   return loading ? (
     <div>
       <Loader/>
@@ -99,14 +98,14 @@ function Profile() {
       <Container>
         <div className='flex items-center justify-center min-h-screen flex-col'>
           <div className='py-8 border-b-[1px] border-gray-400 relative'>
-            <img src={profImage} alt="" className='h-44 aspect-square rounded-full hover:w-52 hover:h-52'/>
+            <img src={profImage} alt="" className='h-44 aspect-square rounded-full'/>
             <label htmlFor="edit" className={`absolute z-10 top-40 right-0 cursor-pointer`}>
               <input type="file" className='sr-only' onChange={editAvatar} id='edit'/>
               <h2 className='bg-cyan-600 text-white px-2 rounded-lg text-sm'>Edit</h2>
             </label>
           </div>
           <div className='w-full flex justify-center items-center flex-col'>
-            <form onSubmit={handleSubmit(editProfile)} className='w-1/2 flex justify-center flex-col items-center'>
+            <form onSubmit={handleSubmit(editProfile)} className='max-md:text-[12px] w-full sm:w-2/3 md:1/2 flex justify-center flex-col items-center'>
                 <Input
                   label = "Fullname :"
                   labelClass = "w-1/3 text-cyan-700"
@@ -153,10 +152,9 @@ function Profile() {
             <div className='flex gap-2 w-full justify-end py-8 px-8'>
                   <Button
                     onClick = {toggleEditing}
-                    className={profileEditing ? 'text-sm bg-green-200' : 'bg-green-400 text-sm'}
-                    disabled = {profileEditing}
+                    className={profileEditing ? 'text-sm bg-red-500' : 'bg-green-400 text-sm'}
                   >
-                    Edit Profile
+                    {profileEditing ? 'Cancel':'Edit Profile'}
                   </Button>
                   <Button
                     onClick = {()=>{navigate("/change-password")}}

@@ -29,7 +29,7 @@ function Header() {
     {
       name : "All Blogs",
       slug : "/all-blogs",
-      status : authStatus
+      status : true
     },
     {
       name : "My Blogs",
@@ -42,9 +42,9 @@ function Header() {
       status : authStatus
     },
     {
-      name : "Contact",
-      slug : "/contact",
-      status : true
+      name : "Profile",
+      slug : "/profile",
+      status : authStatus
     }
     
   ]
@@ -64,7 +64,7 @@ function Header() {
             <Link to="/" className='cursor-pointer'>
               <img src={logo} alt="logo" className='h-32 aspect-auto'/>
             </Link>
-            <ul className='flex gap-12 font-mono font-bold'>
+            <ul className='flex gap-8 max-lg:text-[13px] lg:gap-12 font-mono max-sm:hidden mr-4'>
               {
                 routes.map((field)=>
                 
@@ -84,36 +84,66 @@ function Header() {
             <div className=' flex'>
               {
                 !authStatus && (
-                  <>
+                  <div className='max-sm:hidden w-full flex'>
                     <LoginBtn/>
                     <SignUpBtn/>
-                  </>
+                  </div>
                 )
               }
               {
                 authStatus && (
-                  <button className='text-2xl' onClick = {()=>{setisBarOpen(prev => !prev)}}>{
-                    isBarOpen ? <i className="ri-close-large-line"></i> : <i className="ri-bar-chart-horizontal-line"></i>
-                  }</button>
+                  <>
+                    <div className='max-sm:hidden'><LogoutBtn/></div>
+                  </>
                 )
               }
+              <button className='text-2xl sm:hidden' onClick = {()=>{setisBarOpen(prev => !prev)}}>
+                <i className="ri-bar-chart-horizontal-line"></i>
+              </button>
             </div>
           </div>
       </Container>
       {
         isBarOpen && 
 
-        <div className='h-64 w-64 px-6 absolute z-10 top-20 right-16 rounded-xl shadow-lg bg-white 
+        <div className='sm:hidden min-h-[50vh] w-[320px] px-6 absolute z-50 top-0 right-0 rounded-xl shadow-lg bg-white 
                         flex flex-col justify-around items-center'>
-          <div className='h-36 w-full border-b-[1px] border-gray-300 flex justify-center items-center'><img src={profImage} alt="" className='h-24 w-24 rounded-full'/></div>
-          <div className='flex flex-col items-center gap-4'>
-            <button onClick={()=>{
-              setisBarOpen(prev => !prev)
-              navigate("/profile")
-            }}>Profile</button>
-            <button onClick={()=>setisBarOpen(prev => !prev)}>
-              <LogoutBtn/>
-            </button>
+          <div className='w-full flex justify-end'>
+            <i className="ri-close-large-line cursor-pointer text-xl -mb-4" onClick = {()=>{setisBarOpen(prev => !prev)}}></i> 
+          </div>
+         {
+          authStatus &&
+            <div className='h-36 w-full border-b-[1px] border-gray-300 flex justify-center items-center mb-4'><img src={profImage} alt="" className='h-24 w-24 rounded-full'/></div> 
+          }
+            <div className='flex flex-col items-center gap-4'>
+            <ul className='flex flex-col gap-6 font-mono'>
+                {
+                  routes.map((field)=>
+                  
+                    field.status ? (
+                      <li key={field.name} className={`cursor-pointer hover:underline ${location.pathname === field.slug ? 'text-cyan-700':''}`}
+                        onClick={()=>{
+                          setisBarOpen(false)
+                          navigate(field.slug)
+                        }}>
+                        {field.name}
+                      </li>
+                    ) : null
+                  
+                  )
+                }
+              </ul>
+              <button onClick={()=>setisBarOpen(prev => !prev)} className='mb-2 mt-3'>
+                {
+                  authStatus ? (
+                    <LogoutBtn/>
+                  ):(
+                  <>
+                    <LoginBtn/>
+                    <SignUpBtn/>
+                  </>)
+                }
+              </button>
           </div>
         </div>
       }

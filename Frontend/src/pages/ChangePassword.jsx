@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useForm} from 'react-hook-form'
 import {Container, Input, Button} from '../components'
 import { useNavigate } from 'react-router'
@@ -21,7 +21,7 @@ function ChangePassword() {
                 theme : "light",
                 className : "custom-toast-success"
             })
-            navigate("/")
+            navigate("/profile")
         } catch (error) {
             setErrors(error.message)
         }
@@ -31,7 +31,7 @@ function ChangePassword() {
     <Container>
         <div className='min-h-screen w-full relative mt-16'>
             <h2 className='mx-auto w-full justify-center items-center flex text-red-600'>{errors}</h2>
-            <form className='w-2/3 mx-auto' onSubmit={handleSubmit(changePass)}>
+            <form className='max-xl:w-full mx-auto xl:w-2/3' onSubmit={handleSubmit(changePass)}>
                 <div className='flex justify-center items-center w-full gap-1'>
                     <Input
                         type = {oldPassVisible ? 'text' : 'password'}
@@ -73,14 +73,22 @@ function ChangePassword() {
                         }
                     </button>
                 </div>
-                <div className='flex justify-center items-center'>
-                    <Button
-                    type='submit'
-                    bgColor='bg-orange-500'
-                    className='w-1/6 mt-10'
-                    >
-                        Update
-                    </Button>
+                <div className='flex justify-center items-center mx-5 gap-2'>
+                        <Button
+                        bgColor='bg-cyan-400'
+                        className='w-[100px] mt-10'
+                        onClick= {()=>{navigate("/profile")}}
+                        >
+                            Back
+                        </Button>
+
+                        <Button
+                        type='submit'
+                        bgColor='bg-red-500'
+                        className='w-[100px] mt-10'
+                        >
+                            Update
+                        </Button>
                 </div>
             </form>
         </div>

@@ -8,6 +8,7 @@ import { Profile } from "./pages"
 import { Bounce, ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import 'remixicon/fonts/remixicon.css'
+import { AxiosError } from "axios"
 
 
 // The entire React component tree is reevaluated 
@@ -27,7 +28,7 @@ function App() {
       dispatch(login({data : res.data}))
     })
     .catch((err)=>{
-      dispatch(logout())
+      dispatch(logout());
     })
     .finally(()=>setLoading(false))
 
@@ -35,6 +36,9 @@ function App() {
 
   const renderHeaderAndFooter = (location.pathname === '/login')||(location.pathname === '/signUp')
 
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[location])
 
   return loading ? (
       <Loader/>

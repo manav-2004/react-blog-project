@@ -1,50 +1,45 @@
-import axios from 'axios'
+import axios from 'axios';
+import { Authorize } from '../services/auth.services'; // Adjust path to your AuthServices
 
-export class Api{
+export class Api {
 
-    constructor(baseUrl){
-        
+    constructor(baseUrl) {
         this.client = axios.create({
-            baseURL : baseUrl,
-            headers : {
-                "Content-Type" : "application/json"
+            baseURL: baseUrl,
+            headers: {
+                "Content-Type": "application/json"
             },
-            withCredentials : true
-        })
-
+            withCredentials: true
+        });
     }
 
-    async post(endpoint, data, headers = {}){
+    async post(endpoint, data, headers = {}) {
         try {
-
-            const response = await this.client.post(endpoint, data , {headers})
-            return response.data
-
+            const response = await this.client.post(endpoint, data, { headers });
+            return response.data;
         } catch (error) {
-            throw error.response ? error.response.data : new Error("Network Error")
+            // Pass the custom error response back
+            throw error;
         }
     }
 
-    async get(endpoint, headers = {}){
+    async get(endpoint, headers = {}) {
         try {
-
-            const response = await this.client.get(endpoint, {headers})
-            return response.data
-
+            const response = await this.client.get(endpoint, { headers });
+            return response.data;
         } catch (error) {
-            throw error.response ? error.response.data : new Error("Network Error")
+            // Pass the custom error response back
+            throw error;
         }
     }
 
-    async patch(endpoint, data, headers = {}){
+    async patch(endpoint, data, headers = {}) {
         try {
-
-            const response = await this.client.patch(endpoint, data , {headers})
-            return response.data
-
+            const response = await this.client.patch(endpoint, data, { headers });
+            return response.data;
         } catch (error) {
-            throw error.response ? error.response.data : new Error("Network Error")
+            // Pass the custom error response back
+            throw error;
         }
     }
-
 }

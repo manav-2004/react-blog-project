@@ -4,7 +4,11 @@ import {useDispatch} from 'react-redux'
 import {logout} from '../../features/authSlice'
 import { useNavigate } from 'react-router'
 
-function LogoutBtn() {
+function LogoutBtn(
+    {
+        extraCss = "border-[3px] border-transparent hover:border-cyan-300 px-3 py-[4px] bg-cyan-500 text-white"
+    }
+) {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -26,7 +30,7 @@ function LogoutBtn() {
   return (
     <div className='buttons-div w-[88px]'>
         <button
-            className='buttons'
+            className={`buttons ${extraCss}`}
             onClick={logoutHandler}
         >Logout</button>
     </div>

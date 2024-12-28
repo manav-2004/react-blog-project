@@ -5,6 +5,7 @@ import { Blog as BlogServices} from '../services/blog.services'
 import { Container, Button , Loader} from '../components'
 import parse from 'html-react-parser'
 import {toast} from 'react-toastify'
+import DialogBox from '../components/DialogBox'
 
 
 function Blog() {
@@ -14,6 +15,7 @@ function Blog() {
     const userData = useSelector(state => state.auth.data)
     const {id} = useParams()
     const [loading, setLoading] = useState(true)
+    const [dialogBoxOpen, setDialogBoxOpen] = useState(false)
 
     useEffect(()=>{
 
@@ -38,6 +40,7 @@ function Blog() {
     const isAuthor = userData && post ? userData._id === post.owner : false
     
     const deletePost = async()=>{
+        setDialogBoxOpen(false)
         try {
             
             await BlogServices.deleteBlog(id)
@@ -53,14 +56,17 @@ function Blog() {
     }
 
 
+
+
   return loading ? (
     <div>
         <Loader/>
     </div>
   ) : (
     <div className='min-h-screen my-20'>
-        <Container>
-            <div className='flex w-full flex-col gap-6'>
+        <Container extraCss='relative'>
+        {dialogBoxOpen && <DialogBox falseFn={()=>{setDialogBoxOpen(false)}} trueFn={deletePost}/>} 
+            <div className={`flex w-full flex-col gap-6 ${dialogBoxOpen ? 'opacity-40':''}`}>
                 <div className='w-full p-10 border border-gray-600 rounded-2xl relative'>
                     <img src={post?.featuredImage} alt="" className='h-full w-full'/>
                     {
@@ -70,14 +76,14 @@ function Blog() {
                                 <Button bgColor='bg-green-600' onClick = {()=>{navigate(`/edit-blog/${id}`)}}>
                                     Edit
                                 </Button>
-                                <Button bgColor='bg-red-600' onClick = {deletePost}>
+                                <Button bgColor='bg-red-600' onClick = {()=>{setDialogBoxOpen(true)}}>
                                     Remove
                                 </Button>
                             </div>
                         )                 
                     }
                 </div>
-                <h2 className='mt-4 text-2xl underline'>{post?.title}</h2>
+                <h2 className='mt-4 text-2xl underline'>{post && post.title[0].toUpperCase()+post.title.slice(1,post.title.length)}</h2>
                 <p>
                     {post?.content ? parse(post?.content) : "No Content Available"}
                     {/* DomPurify to prevent XSS */}
