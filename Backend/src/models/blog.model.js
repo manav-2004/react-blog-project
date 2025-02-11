@@ -24,6 +24,11 @@ const blogSchema = new mongoose.Schema({
         ref : 'User',
         required : true,
     },
+    category : {
+        type : String,
+        required : true,
+        enum : ["Tech","Lifestyle","Business","Education","Entertainment","Health","Others"]
+    },
     status : {
         type : Boolean,
         default : false

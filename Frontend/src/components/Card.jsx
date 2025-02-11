@@ -8,11 +8,23 @@ function Card({
     ownerImage = null,
     fullname="Anonymous",
     parsedContent="",
-    deletePost = ()=>{}
+    deletePost = ()=>{},
+    category
 }) {
 
   const [content, setContent] = useState("");
+  ["All","Tech","Lifestyle","Business","Education","Entertainment","Health","Others"]
+  const color = {
+    "Tech" : "bg-red-400",
+    "Lifestyle" : "bg-yellow-300",
+    "Business" : "bg-orange-400",
+    "Education" : "bg-pink-400",
+    "Entertainment" : "bg-green-400",
+    "Health" : "bg-cyan-400",
+    "Others" : "bg-slate-400",
+  }
 
+  const co = "bg-cyan-400";
   const navigate = useNavigate()
 
   useEffect(()=>{
@@ -23,12 +35,15 @@ function Card({
   },[])
 
   return (
-      <div className='w-[260px] h-[320px] shadow-md shadow-slate-400 rounded-lg flex flex-col overflow-hidden cursor-pointer'>
+      <div className='w-[260px] h-[350px] shadow-md shadow-slate-400 rounded-lg flex flex-col overflow-hidden cursor-pointer'>
         <div className='w-full overflow-hidden h-[45%]' onClick={()=>{navigate(`/blog/${id}`)}}><img src={image} alt="" /></div>
         <div className='h-[55%] w-full flex flex-col p-2 px-3 gap-2'>
+          <div>
+          <p className={`text-[11px] text-white px-4 rounded-lg inline-block ${color[category]}`}>{category}</p>
+          </div>
           <h1 className='font-mono text-xl font-semibold text-slate-800 mt-1' onClick={()=>{navigate(`/blog/${id}`)}}>{title[0].toUpperCase() + title.slice(1,title.length)}</h1>
           <p className='text-sm font-bold text-slate-700 tracking-tighter min-h-10' onClick={()=>{navigate(`/blog/${id}`)}}>{content[0]?.toUpperCase()+content.slice(1,Math.min(50,content.length))} ...</p>
-          <div className={`flex ${ownerImage ? 'justify-start':'justify-end'} w-full mt-6 items-center`}>
+          <div className={`flex ${ownerImage ? 'justify-start':'justify-end'} mt-4 w-full items-center`}>
             {
               ownerImage ? (
                 <div className='flex gap-2'>

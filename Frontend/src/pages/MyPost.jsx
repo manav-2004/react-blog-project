@@ -89,6 +89,7 @@ function MyPost() {
                                 activateDialogBox(true)
                                 setDeletingPostId(id)
                             }}
+                            category={blog.category}
                         />
                     ))
                 }

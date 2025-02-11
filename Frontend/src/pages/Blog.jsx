@@ -66,8 +66,8 @@ function Blog() {
     <div className='min-h-screen my-20'>
         <Container extraCss='relative'>
         {dialogBoxOpen && <DialogBox falseFn={()=>{setDialogBoxOpen(false)}} trueFn={deletePost}/>} 
-            <div className={`flex w-full flex-col gap-6 ${dialogBoxOpen ? 'opacity-40':''}`}>
-                <div className='w-full p-10 border border-gray-600 rounded-2xl relative'>
+            <div className={`flex w-full flex-col gap-6 ${dialogBoxOpen ? 'opacity-40':''} px-10`}>
+                <div className='w-full py-10 relative'>
                     <img src={post?.featuredImage} alt="" className='h-full w-full'/>
                     {
                         isAuthor && 

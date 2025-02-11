@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {LogoutBtn, Container, LoginBtn, SignUpBtn} from ".."
 import {useNavigate, Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
-import logo from '/logo.png'
+import logo from '/logo2.png'
 import user from '/public/user.png'
 import { useLocation } from 'react-router-dom'
 

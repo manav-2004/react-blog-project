@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { Authorize } from '../services/auth.services'
 import {useForm} from "react-hook-form"
-import logo from "/logo.png"
+import logo from "/logo2.png"
 
 function SignUp() {
 

@@ -34,6 +34,16 @@ function PostForm({post}) {
             value : false,
         }
     ]
+    const catOptions = [
+        { name: "Tech", value: "Tech" },
+        { name: "Lifestyle", value: "Lifestyle" },
+        { name: "Business", value: "Business" },
+        { name: "Education", value: "Education" },
+        { name: "Entertainment", value: "Entertainment" },
+        { name: "Health", value: "Health" },
+        { name: "Others", value: "Others" }
+    ];
+    
 
     const submit = async (blogData)=>{
         if (post){
@@ -140,6 +150,10 @@ function PostForm({post}) {
                 {
                     imageUrl ? (<img src={imageUrl} className='rounded-lg mt-6 w-full aspect-auto'/>) : null
                 }
+                <Select
+                    options = {catOptions}
+                    {...register("category")}
+                />   
                 <Select
                     options = {dropDownOptions}
                     {...register("status")}

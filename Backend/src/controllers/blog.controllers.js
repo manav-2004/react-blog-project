@@ -96,7 +96,7 @@ const addBlog = asyncHandler(async(req, res)=>{
 
     const user = req.user
 
-    const {title, content, status, slug} = req.body
+    const {title, content, status, slug, category} = req.body
 
     if (
         [title,content,status,slug].some((field)=>field === undefined)
@@ -120,6 +120,7 @@ const addBlog = asyncHandler(async(req, res)=>{
         content,
         featuredImage : featuredImage.url,
         status,
+        category,
         owner : user._id
 
     })
