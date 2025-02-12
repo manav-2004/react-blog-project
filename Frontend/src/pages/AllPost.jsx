@@ -90,7 +90,7 @@ return loading ? (
                 <div className='w-full flex flex-col gap-4 font-mono'> 
                     <div className={`w-full flex items-center justify-end cursor-pointer max-md:justify-center px-20 mb-2 max-md:flex-col max-md:px-0 max-md:gap-8`}>
                         <div className={`w-5/6 flex justify-center items-center gap-4 ${showSearch ? '':'hidden'} max-md:order-2 max-md:flex-col`}>
-                            <input type="text" className={`px-4  w-1/3 border-b-2 border-cyan-600 outline-none`} ref={inputBox} onChange={inputBoxFn}/>
+                            <input type="text" className={`px-4  w-1/3 border-b-2 border-cyan-600 outline-none`} ref={inputBox} onChange={inputBoxFn}placeholder='Search a blog'/>
                             <button className='px-4 bg-cyan-600 text-white rounded-lg' onClick={()=>{setShowSearch(false)}}>Go</button>
                         </div>  
 
@@ -98,6 +98,7 @@ return loading ? (
                             <select className='border-none outline-none cursor-pointer px-4' value={category} ref={val} onClick={()=>{
                                 setBlur(prev => !prev) 
                                 setShowSearch(false)
+                                inputBox.current.value = ""
                             }} onChange={(e)=>{setCategory(e.target.value)}}>
                                 {
                                     ["All","Tech","Lifestyle","Business","Education","Entertainment","Health","Others"].map((category)=>(
@@ -107,6 +108,7 @@ return loading ? (
                             </select>
                             <h1 className='' 
                             onClick={()=>{
+                                setBlur(false)
                                 setShowSearch(true)
                                 setCategory("All")
                                 setTimeout(() => {
