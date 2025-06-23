@@ -9,7 +9,8 @@ function Card({
     fullname="Anonymous",
     parsedContent="",
     deletePost = ()=>{},
-    category
+    category,
+    userId = null
 }) {
 
   const [content, setContent] = useState("");
@@ -47,7 +48,7 @@ function Card({
             {
               ownerImage ? (
                 <div className='flex gap-2'>
-                  <img src={ownerImage} className='rounded-full h-10 aspect-square' />
+                  <img src={ownerImage} className='rounded-full h-10 aspect-square' onClick={()=>{userId && navigate(`/user-profile/${userId}`)}}/>
                   <h2 className='text-slate-600'>{fullname[0].toUpperCase()+fullname.slice(1,fullname.length)}</h2>
                 </div>
               ):(

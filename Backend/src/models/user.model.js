@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
     refreshToken : {
         type : String,
         default : ""
+    },
+    status : {
+        type : Boolean,
+        default : false
     }
 
 },{timestamps : true})

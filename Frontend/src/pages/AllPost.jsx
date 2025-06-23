@@ -3,6 +3,7 @@ import { Container, Card, Loader } from '../components'
 import { Blog } from '../services/blog.services'
 import user from "/user.jpg"
 import parse from 'html-react-parser'
+import { set } from 'react-hook-form'
 
 function AllPost() {
 
@@ -41,11 +42,13 @@ function AllPost() {
 
         if (category == "All"){
             setAllBlogs(globalBlogs)
+            setBlur(false);
             return
         }
 
         const newArray = globalBlogs.filter((blog)=>blog.category == category)
         setAllBlogs(newArray)
+        setBlur(false);
 
     },[category])
 
@@ -109,7 +112,7 @@ return loading ? (
                             <h1 className='' 
                             onClick={()=>{
                                 setBlur(false)
-                                setShowSearch(true)
+                                setShowSearch(prev => !prev)
                                 setCategory("All")
                                 setTimeout(() => {
                                     inputBox.current?.focus()
@@ -133,6 +136,7 @@ return loading ? (
                                         fullname={blog.owner.fullname.split(" ")[0]}
                                         key={blog._id}
                                         category={blog.category}
+                                        userId = {blog.owner._id}
                                     />
                                 ))
                             }

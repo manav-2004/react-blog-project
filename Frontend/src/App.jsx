@@ -4,11 +4,10 @@ import {useDispatch} from 'react-redux'
 import { login, logout } from "./features/authSlice"
 import {Outlet, useLocation } from "react-router-dom"
 import { Footer, Header, Loader } from "./components"
-import { Profile } from "./pages"
+import UserProfile from "./pages/UserProfile"
 import { Bounce, ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import 'remixicon/fonts/remixicon.css'
-import { AxiosError } from "axios"
 
 
 // The entire React component tree is reevaluated 
@@ -16,6 +15,8 @@ import { AxiosError } from "axios"
 function App() {
 
   const [loading, setLoading] = useState(true)
+
+  const [status, setStatus] = useState(false);
 
   const dispatch = useDispatch()
 
@@ -26,6 +27,7 @@ function App() {
     Authorize.getUser()
     .then((res)=>{
       dispatch(login({data : res.data}))
+      setStatus(true);
     })
     .catch((err)=>{
       dispatch(logout());
@@ -34,6 +36,24 @@ function App() {
 
   },[])
 
+  useEffect(()=>{
+
+    Authorize.toggleStatus({status})
+
+  },[status])
+
+  useEffect(()=>{
+    const fn = () => {
+      Authorize.toggleStatus({status : false})
+    }
+
+    window.addEventListener('beforeunload', fn)
+
+    return () => {
+      window.removeEventListener('beforeunload', fn)
+    }
+  }, [])
+  
   const renderHeaderAndFooter = (location.pathname === '/login')||(location.pathname === '/signUp')
 
   useEffect(()=>{
@@ -62,7 +82,6 @@ function App() {
         {!renderHeaderAndFooter && <Header/>}
         <main>
           <Outlet/>
-          {/* <Profile/> */}
         </main>
         {!renderHeaderAndFooter && <Footer/>}
       </div>

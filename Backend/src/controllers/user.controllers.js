@@ -5,7 +5,7 @@ import {User} from '../models/user.model.js'
 import {deleteFromCloudinary, uploadOnCloudinary} from '../utils/cloudinary.js'
 import fs from 'fs'
 import jwt from 'jsonwebtoken'
-import mongoose from 'mongoose'
+import mongoose, { Mongoose } from 'mongoose'
 
 
 const generateRefreshAndAccessToken = async (id)=>{
@@ -266,6 +266,67 @@ const getUser = asyncHandler(async(req, res)=>{
 
 })
 
+const getUserData = asyncHandler(async(req, res)=>{
+
+    const {id} = req.body
+
+    if (!id){
+        throw new ApiError(400, "User id not sent")
+    }
+
+    const data = await User.aggregate([
+        {
+            $match : {
+                _id : new mongoose.Types.ObjectId(id)
+            }
+        },
+        {
+            $lookup : {
+                from : "blogs",
+                localField : "blogs",
+                foreignField : "_id",
+                as : "blogs",
+                pipeline : [
+
+                    {
+                        $match : {
+                            status : true
+                        }
+                    },
+                    {
+                        $project : {
+                            _id : 1,
+                            title : true,
+                            featuredImage : true
+                        }
+                    }
+                ] 
+            }
+        },
+        {
+
+            $project : {
+                username : 1,
+                fullname : 1,
+                blogs : 1,
+                email : 1,
+                avatar : 1,
+                status : 1
+            }
+
+        }
+    ])
+
+    if (data.length == 0){
+        throw new ApiError(400, "Id not found")
+    }
+
+    res.status(200)
+    .json(
+        new ApiResponse(200, data[0], "Data Sent Successfully")
+    )
+})
+
 const updateDetails = asyncHandler(async(req, res)=>{
 
     const id = req.user._id
@@ -344,6 +405,44 @@ const updateAvatar = asyncHandler(async(req, res)=>{
 
 })
 
+const fetchStatus = asyncHandler(async(req, res)=>{
+
+    const id = req.body.id
+
+    if (!id){
+        throw new ApiError(400, "Id not sent")
+    }
+
+    const data = await User.findById(id).select("status")
+
+    if (!data){
+        throw new ApiError(400, "Id not found")
+    }
+
+    res.status(200)
+    .json(
+        new ApiResponse(200, data, "status sent successfully")
+    )
+
+})
+
+const toggleStatus = asyncHandler(async(req, res)=>{
+
+    const {status} = req.body
+
+    await User.findByIdAndUpdate(req.user._id, {
+        $set : {
+            status
+        }
+    })
+
+    res.status(200).json(
+        new ApiResponse(200, {}, "Status Changed Successfully")
+    )
+})
+
+    
+
 export{
     registerUser,
     loginUser,
@@ -352,7 +451,10 @@ export{
     changePassword,
     getUser,
     updateAvatar,
-    updateDetails
+    updateDetails,
+    getUserData,
+    fetchStatus,
+    toggleStatus
 }
 
 

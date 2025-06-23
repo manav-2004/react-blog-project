@@ -11,7 +11,7 @@ import '../css/toast.css'
 import { login } from '../features/authSlice'
 import { useNavigate } from 'react-router'
 
-function Profile() {
+function MyProfile() {
 
   const [loading, setLoading] = useState(true)
   const [profImage, setProfImage] = useState(user)
@@ -171,4 +171,4 @@ function Profile() {
   )
 }
 
-export default Profile
+export default MyProfile

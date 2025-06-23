@@ -76,6 +76,55 @@ class AuthServices{
         }
     }
 
+    async getUserData(data){
+        try {
+
+            const response = await this.api.post("/getUserData", data)
+            return response
+            
+        } catch (error) {
+            if (error.response.data.statusCode == 401){
+                await this.refreshTokens()
+                await this.getUser()
+                refreshPage()
+            }
+            throw error
+        }
+    }
+
+
+    async fetchStatus(data){
+        try {
+
+            const response = await this.api.post("/fetchStatus", data)
+            return response
+            
+        } catch (error) {
+            if (error.response.data.statusCode == 401){
+                await this.refreshTokens()
+                await this.getUser()
+                refreshPage()
+            }
+            throw error
+        }
+    }
+
+    async toggleStatus(data){
+        try {
+
+            const response = await this.api.post("/toggleStatus", data)
+            return response
+            
+        } catch (error) {
+            if (error.response.data.statusCode == 401){
+                await this.refreshTokens()
+                await this.getUser()
+                refreshPage()
+            }
+            throw error
+        }
+    }
+
     async logout(){
         try {
             

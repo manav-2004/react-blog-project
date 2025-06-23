@@ -6,7 +6,7 @@ import AddPost from "./AddPost"
 import Home from "./Home"
 import EditPost from "./EditPost"
 import Blog from "./Blog"
-import Profile from "./Profile"
+import MyProfile from "./MyProfile"
 import ChangePassword from "./ChangePassword"
 
 export {
@@ -18,6 +18,6 @@ export {
     Home,
     EditPost,
     Blog,
-    Profile,
+    MyProfile,
     ChangePassword
 }
