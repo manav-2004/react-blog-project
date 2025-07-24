@@ -18,6 +18,8 @@ function App() {
 
   const [status, setStatus] = useState(false);
 
+  const [showWarmUpMessage, setShowWarmUpMessage] = useState(false)
+
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -32,7 +34,9 @@ function App() {
     .catch((err)=>{
       dispatch(logout());
     })
-    .finally(()=>setLoading(false))
+    .finally(()=>{
+      setLoading(false);
+    })
 
   },[])
 
@@ -54,6 +58,21 @@ function App() {
     }
   }, [])
   
+
+  useEffect(() => {
+    
+    let time;
+    if (loading){
+      time = setTimeout(() => {
+        setShowWarmUpMessage(true);
+      }, 2000);
+    } 
+
+    return () => clearTimeout(time);
+  }, [loading]);
+
+
+
   const renderHeaderAndFooter = (location.pathname === '/login')||(location.pathname === '/signUp')
 
   useEffect(()=>{
@@ -61,7 +80,14 @@ function App() {
   },[location])
 
   return loading ? (
-      <Loader/>
+      <div>
+        <Loader />
+        {showWarmUpMessage && (
+          <div className="fixed bottom-0 left-0 right-0 bg-cyan-700 text-white text-center p-2">
+            Warming up the server, please wait...
+          </div>
+        )}
+      </div>
   ) : (
     <div className="min-h-screen w-full font-bold font-mono relative">
       <ToastContainer
