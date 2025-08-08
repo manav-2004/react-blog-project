@@ -21,7 +21,7 @@ function ForgotPassword() {
         try {
             
             const res = await Authorize.sendMail({email})
-            toast.success("Profile Updated Successfully",{
+            toast.success("Mail Sent Successfully",{
                 theme : "light",
                 className : "custom-toast-success"
             })

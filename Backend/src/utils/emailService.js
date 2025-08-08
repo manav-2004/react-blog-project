@@ -18,7 +18,7 @@ export const sendMail = async (email, token)=>{
     try {
         
         await transporter.sendMail({
-            from : `John Doe ${process.env.MAIL}`,
+            from : `Sandy ${process.env.MAIL}`,
             to : email,
             subject : "Reset Password",
             html : `
@@ -108,7 +108,7 @@ export const sendMail = async (email, token)=>{
                             </div>
                             
                             <div class="warning">
-                                <strong>⚠️ Security Notice:</strong> This link will expire in 1 hour for your security.
+                                <strong>⚠️ Security Notice:</strong> This link will expire in 5 minutes for your security.
                             </div>
                             
                             <p><strong>If the button doesn't work</strong>, copy and paste the following URL into your browser:</p>
