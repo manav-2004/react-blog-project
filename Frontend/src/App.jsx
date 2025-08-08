@@ -71,9 +71,10 @@ function App() {
     return () => clearTimeout(time);
   }, [loading]);
 
+  const arr = ["/login", "/signUp", "/forgot-password"]
 
 
-  const renderHeaderAndFooter = (location.pathname === '/login')||(location.pathname === '/signUp')
+  const renderHeaderAndFooter = !arr.includes(location.pathname) && !location.pathname.startsWith("/reset-password")
 
   useEffect(()=>{
     window.scrollTo(0,0)
@@ -105,11 +106,11 @@ function App() {
       />
 
       <div className="w-full block">
-        {!renderHeaderAndFooter && <Header/>}
+        {renderHeaderAndFooter && <Header/>}
         <main>
           <Outlet/>
         </main>
-        {!renderHeaderAndFooter && <Footer/>}
+        {renderHeaderAndFooter && <Footer/>}
       </div>
     </div>
   )

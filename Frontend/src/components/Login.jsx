@@ -23,7 +23,7 @@ function Login() {
             dispatch(authLogin({data : res.data}))
             navigate("/")
         } catch (error) {
-            setErrors(error.message)
+            setErrors(error.response.data.message)
         }
 
     }
@@ -70,6 +70,9 @@ function Login() {
                     <Button className='w-full mt-8'>Sign In</Button>
 
                 </form>
+                    <div className='mt-6 font-normal text-sm underline text-cyan-700 w-full flex justify-end cursor-pointer' onClick={()=>{
+                        navigate("/forgot-password")
+                    }}>Forgot Password ?</div>
             </div>
         </div>
     )

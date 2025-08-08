@@ -8,6 +8,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Protected } from "./components"
 import {AddPost, AllPost, Blog,EditPost, Home, LogIn, MyPost, SignUp,MyProfile, ChangePassword} from "./pages"
 import UserProfile from './pages/UserProfile.jsx'
+import ForgotPassword from './pages/ForgotPassword.jsx'
+import ResetPassword from './pages/ResetPassword.jsx'
 
 
 const router = createBrowserRouter([
@@ -91,6 +93,20 @@ const router = createBrowserRouter([
         path : "/user-profile/:id",
         element : (
             <UserProfile/>
+        )
+      },
+      {
+        path : "/forgot-password/",
+        element : (
+          <Protected authentication={false}>
+              <ForgotPassword/>
+          </Protected>
+        )
+      },
+      {
+        path : "/reset-password/:token",
+        element : (
+          <ResetPassword/>
         )
       }
     ]

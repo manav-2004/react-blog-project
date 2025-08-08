@@ -2,10 +2,13 @@ import {asyncHandler} from '../utils/asyncHandler.js'
 import {ApiError} from '../utils/ApiError.js'
 import {ApiResponse} from '../utils/ApiResponse.js'
 import {User} from '../models/user.model.js'
+import {Temp} from "../models/resetPass.model.js"
 import {deleteFromCloudinary, uploadOnCloudinary} from '../utils/cloudinary.js'
 import fs from 'fs'
 import jwt from 'jsonwebtoken'
 import mongoose, { Mongoose } from 'mongoose'
+import crypto from "crypto"
+import { sendMail } from '../utils/emailService.js'
 
 
 const generateRefreshAndAccessToken = async (id)=>{
@@ -441,7 +444,104 @@ const toggleStatus = asyncHandler(async(req, res)=>{
     )
 })
 
-    
+const sendResetMail = asyncHandler(async (req, res)=>{
+
+
+    const { email } = req.body
+
+    if (!email){
+        throw new ApiError(400, "Email is required")
+    }
+
+    const check = await User.findOne({
+        email
+    }).select("-password -refreshToken")
+
+    if (!check){
+        throw new ApiError(400, "User Doesn't Exist")
+    }
+
+    //user exist
+    //generate a token
+
+    const token = crypto.randomBytes(32).toString("hex")
+
+    const temp = await Temp.create({
+        user : check._id,
+        token
+    })
+
+    if (!temp){
+        throw new ApiError(500, "Internal server error")
+    }
+
+    await sendMail(email,token)
+
+
+    res.status(200)
+    .json(
+        new ApiResponse(200, {}, "Email sent successfully")
+    )
+})
+
+const verifyToken = asyncHandler(async(req, res)=>{
+
+    const { token } = req.body
+
+    if (!token){
+        throw new ApiError(400, "token not received")
+    }
+
+    const check = await Temp.findOne({
+        token
+    })
+
+    if (!check){
+        throw new ApiError(404, "Page not found")
+    }
+
+
+    res.status(200)
+    .json(
+        new ApiResponse(200, {}, "token Validated")
+    )
+})
+
+const resetPassword = asyncHandler(async (req, res)=>{
+
+    const {token, password} = req.body
+
+    if (!token || !password){
+        throw new ApiError(400, "Both fields are required")
+    }
+
+    const check = await Temp.findOne({
+        token
+    })
+
+    if (!token){
+        throw new ApiError(400, "token expired")
+    }
+
+    const user = await User.findOne({
+        _id : check.user
+    }).select("-password -refreshToken")
+
+    if (!user){
+        throw new ApiError(400, "Couldn't locate user")
+    }
+
+    await Temp.findByIdAndDelete(check._id)
+
+    user.password = password
+    await user.save()
+
+    res.status(200)
+    .json(
+        new ApiResponse(200, {}, "Password updated successfully")
+    )
+
+})
 
 export{
     registerUser,
@@ -454,7 +554,10 @@ export{
     updateDetails,
     getUserData,
     fetchStatus,
-    toggleStatus
+    toggleStatus,
+    sendResetMail,
+    verifyToken,
+    resetPassword
 }
 
 

@@ -11,7 +11,10 @@ import {
         updateDetails,
         getUserData,
         fetchStatus,
-        toggleStatus
+        toggleStatus,
+        sendResetMail,
+        verifyToken,
+        resetPassword
 } from "../controllers/user.controllers.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
@@ -25,6 +28,12 @@ router.route("/login").post(loginUser)
 router.route("/getUserData").post(getUserData)
 
 router.route("/fetchStatus").post(fetchStatus)
+
+router.route("/sendMail").post(sendResetMail)
+
+router.route("/verifyToken").post(verifyToken)
+
+router.route("/resetPassword").post(resetPassword)
 
 //secured routes
 

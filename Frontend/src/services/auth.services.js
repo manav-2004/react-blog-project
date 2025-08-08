@@ -55,7 +55,7 @@ class AuthServices{
             return response
 
         } catch (error) {
-            console.log("Error logging in")
+            console.log(error)
             throw error
         }
     }
@@ -175,6 +175,51 @@ class AuthServices{
                 refreshPage()
             }
             console.log("Error on updating details")
+            throw error
+        }
+    }
+
+    async sendMail(data){
+        try {
+            
+            const response = await this.api.post("/sendMail",data)
+            return response
+
+        } catch (error) {
+            if (error.response.data.statusCode == 401){
+                refreshPage()
+            }
+            console.log("Error on sending Mail")
+            throw error
+        }
+    }
+    
+    async verifyToken(data){
+        try {
+            
+            const response = await this.api.post("/verifyToken",data)
+            return response
+
+        } catch (error) {
+            if (error.response.data.statusCode == 401){
+                refreshPage()
+            }
+            console.log("Error on Verifying Token")
+            throw error
+        }
+    }
+
+    async resetPassword(data){
+        try {
+            
+            const response = await this.api.post("/resetPassword",data)
+            return response
+
+        } catch (error) {
+            if (error.response.data.statusCode == 401){
+                refreshPage()
+            }
+            console.log("Error on Reseting Password")
             throw error
         }
     }

@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 export const errorHandler = (err, req, res, next)=>{
 
     if (err instanceof ApiError){
+
         res.status(err.statusCode)
         .json(
             {
