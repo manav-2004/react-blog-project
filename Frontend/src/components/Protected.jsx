@@ -10,10 +10,14 @@ function Protected({children, authentication}) {
     const authStatus = useSelector(state => state.auth.status)
     const navigate = useNavigate()
     const location = useLocation()
+
+    const userData = useSelector(state => state.auth.data)
+
+
     
     useEffect(()=>{
         
-        if (authentication && (authStatus !== authentication)){
+        if (authentication && ((authStatus !== authentication) || (!userData?.passwordSet && location.pathname == "/change-password"))){
             navigate("/")
             // navigate("/login")
         }

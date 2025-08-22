@@ -29,7 +29,7 @@ function ChangePassword() {
 
   return (
     <Container>
-        <div className='min-h-screen w-full relative mt-16'>
+    <div className='min-h-screen w-full relative mt-16 bg-white dark:bg-gray-900 dark:text-white'>
             <h2 className='mx-auto w-full justify-center items-center flex text-red-600'>{errors}</h2>
             <form className='max-xl:w-full mx-auto xl:w-2/3' onSubmit={handleSubmit(changePass)}>
                 <div className='flex justify-center items-center w-full gap-1'>

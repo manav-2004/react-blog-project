@@ -1,10 +1,4 @@
-import axios from 'axios';
 import {Api} from '../api/Api.js'
-
-const refreshPage = ()=>{
-    window.location.reload()
-}
-
 
 class AuthServices{
 
@@ -48,10 +42,34 @@ class AuthServices{
         }
     }
 
+    async googleRegister(code){
+        try {
+            
+            const response = await this.api.get(`/googleRegister?code=${code}`)
+            return response
+
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
     async login(data){
         try {
             
             const response = await this.api.post("/login", data)
+            return response
+
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
+    async googleLogin(code){
+        try {
+            
+            const response = await this.api.get(`/googleLogin?code=${code}`)
             return response
 
         } catch (error) {
@@ -67,11 +85,7 @@ class AuthServices{
             return response
             
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                await this.refreshTokens()
-                await this.getUser()
-                refreshPage()
-            }
+
             throw error
         }
     }
@@ -83,11 +97,7 @@ class AuthServices{
             return response
             
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                await this.refreshTokens()
-                await this.getUser()
-                refreshPage()
-            }
+
             throw error
         }
     }
@@ -100,11 +110,8 @@ class AuthServices{
             return response
             
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                await this.refreshTokens()
-                await this.getUser()
-                refreshPage()
-            }
+
+            console.log("Error on fetching status")
             throw error
         }
     }
@@ -116,11 +123,8 @@ class AuthServices{
             return response
             
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                await this.refreshTokens()
-                await this.getUser()
-                refreshPage()
-            }
+
+            console.log("Error in toggling status")
             throw error
         }
     }
@@ -132,6 +136,7 @@ class AuthServices{
             return response
 
         } catch (error) {
+
             console.log("Error on logout")
             throw error
         }
@@ -144,9 +149,7 @@ class AuthServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on password change")
             throw error
         }
@@ -159,6 +162,7 @@ class AuthServices{
             return response
 
         } catch (error) {
+            
             console.log("Error on refreshing tokens")
             throw error
         }
@@ -171,9 +175,7 @@ class AuthServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on updating details")
             throw error
         }
@@ -186,9 +188,7 @@ class AuthServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on sending Mail")
             throw error
         }
@@ -201,9 +201,7 @@ class AuthServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on Verifying Token")
             throw error
         }
@@ -216,9 +214,7 @@ class AuthServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on Reseting Password")
             throw error
         }
@@ -244,9 +240,7 @@ class AuthServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on updating avatar")
             throw error
         }

@@ -58,20 +58,20 @@ function UserProfile() {
     },[])
 
   return (
-    <div className='min-h-screen pt-12'>
+    <div className='min-h-screen pt-12 bg-white dark:bg-gray-900 dark:text-white'>
         <Container>
             <div className='h-full w-full flex flex-col gap-6'>
-                <h1 className='text-center w-full text-4xl text-cyan-900 '><span className='border-b-[2px] border-cyan-950'>User </span><span className='border-cyan-950 text-cyan-700 border-b-[2px]'>Profile</span></h1>
+                <h1 className='text-center w-full text-4xl text-cyan-900 dark:text-cyan-300'><span className='border-b-[2px] border-cyan-950 dark:border-cyan-400'>User </span><span className='border-cyan-950 dark:border-cyan-400 text-cyan-700 dark:text-cyan-400 border-b-[2px]'>Profile</span></h1>
                 <div className='w-full h-[60vh] flex flex-col items-center justify-center gap-10'>
-                    <img className='h-40 aspect-square rounded-full' src={image} />
-                    <div className={`${status ? 'text-green-500' :'text-red-700'}`}>{status ? 'Online' : 'Offline'}</div>
+                    <img className='h-40 aspect-square rounded-full border dark:border-gray-700' src={image} />
+                    <div className={`${status ? 'text-green-500 dark:text-green-400' :'text-red-700 dark:text-red-400'}`}>{status ? 'Online' : 'Offline'}</div>
                     <div className='flex flex-col items-center justify-center gap-4'>
                         {
                             Object.entries(data).map((item, key)=>(
                             <div className='flex items-center justify-between w-full gap-4' key={key}>
-                                <h2 className='font-bold text-xl text-cyan-500 w-28'>{item[0]}</h2>
-                                <h2 className='font-bold text-xl text-cyan-300'>:</h2>
-                                <input type="text" className='text-xl border-[1px] border-slate-200 rounded-xl px-10 py-2 bg-white' disabled value={item[1]}/>
+                                <h2 className='font-bold text-xl text-cyan-500 dark:text-cyan-300 w-28'>{item[0]}</h2>
+                                <h2 className='font-bold text-xl text-cyan-300 dark:text-cyan-400'>:</h2>
+                                <input type="text" className='text-xl border-[1px] border-slate-200 dark:border-gray-700 rounded-xl px-10 py-2 bg-white dark:bg-gray-800 dark:text-white' disabled value={item[1]}/>
                             </div>
                             ))
                         }
@@ -83,7 +83,7 @@ function UserProfile() {
                             <div className='w-full flex gap-10'>
                                 {
                                     blogs.map((blog, key)=>(
-                                        <div className='w-[14vw] rounded-xl flex flex-col overflow-hidden shadow-lg cursor-pointer' onClick={()=>{navigate(`/blog/${blog._id}`)}} key={key}>
+                                        <div className='w-[14vw] rounded-xl flex flex-col overflow-hidden shadow-lg cursor-pointer dark:bg-gray-900 dark:text-white' onClick={()=>{navigate(`/blog/${blog._id}`)}} key={key}>
                                             <img src={blog.featuredImage} className='w-full aspect-auto' />
                                             <h2 className='w-full flex items-center max-h-1/2 px-2 py-4'>{blog.title}</h2>
                                         </div>

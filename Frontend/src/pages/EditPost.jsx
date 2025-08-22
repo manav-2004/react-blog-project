@@ -29,7 +29,7 @@ function EditPost() {
 
 
   return post ? (
-    <div className='mb-12 min-h-screen'>
+  <div className='mb-12 min-h-screen bg-white dark:bg-gray-900 dark:text-white'>
         <PostForm post={post}/>
         {/* or <PostForm {...post}/> */}
     </div>

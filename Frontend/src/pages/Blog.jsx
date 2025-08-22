@@ -83,8 +83,8 @@ function Blog() {
                         )                 
                     }
                 </div>
-                <h2 className='mt-4 text-2xl underline'>{post && post.title[0].toUpperCase()+post.title.slice(1,post.title.length)}</h2>
-                <p>
+                <h2 className='mt-4 text-2xl underline dark:text-gray-300'>{post && post.title[0].toUpperCase()+post.title.slice(1,post.title.length)}</h2>
+                <p className='dark:text-gray-200'>
                     {post?.content ? parse(post?.content) : "No Content Available"}
                     {/* DomPurify to prevent XSS */}
                 </p>

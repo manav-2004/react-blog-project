@@ -14,7 +14,9 @@ import {
         toggleStatus,
         sendResetMail,
         verifyToken,
-        resetPassword
+        resetPassword,
+        googleLogin,
+        googleRegister
 } from "../controllers/user.controllers.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
@@ -23,7 +25,11 @@ const router = Router()
 
 router.route("/register").post(upload.single("avatar"),registerUser)
 
+router.route("/googleRegister").get(googleRegister)
+
 router.route("/login").post(loginUser)
+
+router.route("/googleLogin").get(googleLogin)
 
 router.route("/getUserData").post(getUserData)
 
@@ -35,11 +41,11 @@ router.route("/verifyToken").post(verifyToken)
 
 router.route("/resetPassword").post(resetPassword)
 
+router.route("/refreshTokens").get(refresh_tokens)
+
 //secured routes
 
 router.route("/logout").get(isLoggedIn,logoutUser)
-
-router.route("/refreshTokens").get(refresh_tokens)
 
 router.route("/changePassword").post(isLoggedIn,changePassword)
 

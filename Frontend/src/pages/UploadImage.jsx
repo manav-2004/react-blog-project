@@ -38,15 +38,15 @@ function UploadImage() {
       <Loader/>
     </div>
   ) : (
-    <div className='w-full min-h-screen relative'>
-      <div className='w-full min-h-screen flex justify-center items-center flex-col gap-10 border border-black'>
+  <div className='w-full min-h-screen relative bg-white dark:bg-gray-900 dark:text-white'>
+  <div className='w-full min-h-screen flex justify-center items-center flex-col gap-10 border border-black dark:border-gray-700 bg-white dark:bg-gray-900'>
         <div>
-          <img src={avatar} alt="" className='w-48 h-48 rounded-full'/>
+          <img src={avatar} alt="" className='w-48 h-48 rounded-full border dark:border-gray-700'/>
         </div>
         <div className='flex gap-6'>
           <label htmlFor="upload" className='cursor-pointer'>
             <input type="file" id='upload' className='sr-only' onChange={setImage}/>
-            <h2 className='px-4 py-2 rounded-lg text-white bg-cyan-600'>Upload</h2>
+            <h2 className='px-4 py-2 rounded-lg text-white bg-cyan-600 dark:bg-cyan-800'>Upload</h2>
           </label>
           <Button
             bgColor= {showNext ? 'bg-red-200' : 'bg-red-500'}

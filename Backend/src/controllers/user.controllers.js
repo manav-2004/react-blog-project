@@ -9,6 +9,8 @@ import jwt from 'jsonwebtoken'
 import mongoose, { Mongoose } from 'mongoose'
 import crypto from "crypto"
 import { sendMail } from '../utils/emailService.js'
+import { oAuth2Client } from '../utils/GoogleLogin.js'
+import axios from "axios"
 
 
 const generateRefreshAndAccessToken = async (id)=>{
@@ -70,29 +72,91 @@ const registerUser = asyncHandler(async(req, res)=>{
         throw new ApiError(409,"user already exists")
     }
 
-    const avatarLocalPath = req.file?.path
+    // const avatarLocalPath = req.file?.path
 
-    let avatar = {}
-    if (fs.existsSync(avatarLocalPath)){
-       avatar = await uploadOnCloudinary(avatarLocalPath)
-    }
+    // let avatar = {}
+    // if (fs.existsSync(avatarLocalPath)){
+    //    avatar = await uploadOnCloudinary(avatarLocalPath)
+    // }
 
     const _user = await User.create({
         fullname,
         username,
         password,
         email,
-        avatar : avatar?.url || ""
+        passwordSet : true
     })
 
     const registeredUser = await User.findById(_user._id).select(
         "-password"
     )
 
-    res.status(200)
+    res.status(201)
     .json(
-        new ApiResponse(200,registeredUser,"User created successfully")
+        new ApiResponse(201,registeredUser,"User created successfully")
     )
+
+})
+
+
+const googleRegister = asyncHandler(async (req, res)=>{
+
+    const {code} = req.query
+
+    if (!code){
+        throw new ApiError(400, "Verification code not sent")
+    }
+    
+    const {tokens} = await oAuth2Client.getToken(code)
+    
+    if (!tokens){
+        throw new ApiError(500, "Error in oAuth Token generation")
+    }
+
+    const { data } = await axios.get(`${process.env.OAUTH_URL}=${tokens.access_token}`)
+    
+    if (!data){
+        throw new ApiError(500, "Error in oAuth Login")
+    }
+
+    //name and email
+    const existingUser = await User.findOne({email : data.email})
+
+    if (existingUser){
+        throw new ApiError(400, "User already exist")
+    }
+
+    let user = await User.create({
+        fullname : data.name,
+        email : data.email,
+        passwordSet : false,    
+    })
+
+
+    if (!user){
+        throw new ApiError(500, "user could not be created")
+    }
+
+    const jwtTokens = await generateRefreshAndAccessToken(user._id)
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+      };
+
+    user = user.toObject()
+    
+    delete user?.password
+    delete user?.refreshToken
+
+    res.status(201)
+    .cookie("accessToken",jwtTokens.accessToken, options)
+    .cookie("refreshToken",jwtTokens.refreshToken, options)
+    .json(
+        new ApiResponse(201,user,"Signed Up successfully")
+    )
+
 
 })
 
@@ -112,7 +176,7 @@ const loginUser = asyncHandler(async(req, res)=>{
         throw new ApiError(400,"one or both field sent is empty")
     }
 
-    const user = await User.findOne({
+    let user = await User.findOne({
         email
     })
 
@@ -136,13 +200,69 @@ const loginUser = asyncHandler(async(req, res)=>{
         // path: '/',
       };
 
+    user = user.toObject()
+    
     delete user?.password
-    user.accessToken = tokens?.accessToken
-    user.refreshToken = tokens?.refreshToken
+    delete user?.refreshToken
 
     res.status(200)
     .cookie("accessToken",tokens.accessToken, options)
     .cookie("refreshToken",tokens.refreshToken, options)
+    .json(
+        new ApiResponse(200,user,"loggedIn successfully")
+    )
+
+})
+
+
+const googleLogin = asyncHandler(async (req, res)=>{
+
+    const {code} = req.query
+
+    //validate the code
+    if (!code){
+        throw new ApiError(400, "Validation code not sent")
+    }
+
+    const { tokens } = await oAuth2Client.getToken(code)
+
+
+    if (!tokens){
+        throw new ApiError(500, "Error in oAuth Token generation")
+    }
+
+    const {data} = await axios.get(`${process.env.OAUTH_URL}=${tokens.access_token}`)
+
+    if (!data){
+        throw new ApiError(500, "Error in oAuth Login")
+    }
+
+    const email = data.email
+
+    let user = await User.findOne({email})
+
+
+    if (!user){
+        throw new ApiError(404, "user not found")
+    }
+
+
+    const jwtTokens = await generateRefreshAndAccessToken(user._id)
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+      };
+
+    user = user.toObject()
+    
+    delete user?.password
+    delete user?.refreshToken
+
+    res.status(200)
+    .cookie("accessToken",jwtTokens.accessToken, options)
+    .cookie("refreshToken",jwtTokens.refreshToken, options)
     .json(
         new ApiResponse(200,user,"loggedIn successfully")
     )
@@ -183,8 +303,9 @@ const logoutUser = asyncHandler(async(req, res)=>{
 })
 
 const refresh_tokens = asyncHandler(async(req, res)=>{
+    
 
-    const incomingRefreshToken = req.cookies?.refreshToken || req.header("Authorization").replace("Bearer ","")
+    const incomingRefreshToken = req.cookies?.refreshToken || req.header("Authorization")?.replace("Bearer ","")
 
     if (!incomingRefreshToken){
         throw new ApiError(401, "Unauthorized Requst")
@@ -557,7 +678,9 @@ export{
     toggleStatus,
     sendResetMail,
     verifyToken,
-    resetPassword
+    resetPassword,
+    googleLogin,
+    googleRegister
 }
 
 

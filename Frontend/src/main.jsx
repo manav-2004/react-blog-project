@@ -10,6 +10,7 @@ import {AddPost, AllPost, Blog,EditPost, Home, LogIn, MyPost, SignUp,MyProfile, 
 import UserProfile from './pages/UserProfile.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 
 const router = createBrowserRouter([
@@ -114,7 +115,10 @@ const router = createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store = {store}>
-    <RouterProvider router={router}/>
-  </Provider>
+
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
+    <Provider store = {store}>
+      <RouterProvider router={router}/>
+    </Provider>
+  </GoogleOAuthProvider>
 )

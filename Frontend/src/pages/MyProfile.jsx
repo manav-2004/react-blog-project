@@ -94,18 +94,18 @@ function MyProfile() {
       <Loader/>
     </div>
   ): (
-    <div className='min-h-screen' >
+  <div className='min-h-screen w-full flex flex-col items-center justify-center bg-white dark:bg-gray-900 dark:text-white'>
       <Container>
         <div className='flex items-center justify-center min-h-screen flex-col'>
-          <div className='py-8 border-b-[1px] border-gray-400 relative'>
-            <img src={profImage} alt="" className='h-44 aspect-square rounded-full'/>
-            <label htmlFor="edit" className={`absolute z-10 top-40 right-0 cursor-pointer`}>
+          <div className='py-8 border-b-[1px] border-gray-400 dark:border-gray-700 relative'>
+            <img src={profImage} alt="" className='h-44 aspect-square rounded-full border border-cyan-500 dark:border-gray-700'/>
+            <label htmlFor="edit" className={`absolute z-10 top-40 right-0 cursor-pointer text-slate-700 dark:text-white`}>
               <input type="file" className='sr-only' onChange={editAvatar} id='edit'/>
-              <h2 className='bg-cyan-600 text-white px-2 rounded-lg text-sm'>Edit</h2>
+              <h2 className='bg-cyan-600 dark:bg-cyan-800 text-white px-2 rounded-lg text-sm'>Edit</h2>
             </label>
           </div>
           <div className='w-full flex justify-center items-center flex-col'>
-            <form onSubmit={handleSubmit(editProfile)} className='max-md:text-[12px] w-full sm:w-2/3 md:1/2 flex justify-center flex-col items-center'>
+            <form onSubmit={handleSubmit(editProfile)} className='max-md:text-[12px] w-full sm:w-2/3 md:1/2 flex justify-center flex-col items-center bg-white dark:bg-gray-900 dark:text-white'>
                 <Input
                   label = "Fullname :"
                   labelClass = "w-1/3 text-cyan-700"
@@ -156,13 +156,16 @@ function MyProfile() {
                   >
                     {profileEditing ? 'Cancel':'Edit Profile'}
                   </Button>
-                  <Button
-                    onClick = {()=>{navigate("/change-password")}}
-                    className={profileEditing ? 'text-sm bg-yellow-200': 'bg-yellow-500 text-sm'}
-                    disabled = {profileEditing}
-                  >
-                    changePassword
-                  </Button>
+                  { 
+                    userData?.passwordSet &&                 
+                    <Button
+                      onClick = {()=>{navigate("/change-password")}}
+                      className={profileEditing ? 'text-sm bg-yellow-200': 'bg-yellow-500 text-sm'}
+                      disabled = {profileEditing}
+                    >
+                      changePassword
+                    </Button>
+                  }
             </div>
           </div>
         </div>

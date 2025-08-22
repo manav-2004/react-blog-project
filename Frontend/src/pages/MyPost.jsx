@@ -64,14 +64,14 @@ function MyPost() {
         <Loader/>
     </div>
   ):(
-    <div className={`p-8 min-h-screen`}>
+    <div className={`p-8 min-h-screen bg-white dark:bg-gray-900 dark:text-white`}>
         <Container extraCss='relative'>
         {dialogBox && <DialogBox falseFn={()=>{activateDialogBox(false)}} trueFn={deletePost}/>}            
            {
             allBlogs.length === 0?
             (
-                <div className='min-h-screen w-full flex justify-center items-center'>
-                    <h2 className='text-5xl font-bold font-mono'>No Uploads Yet!</h2>
+                <div className='min-h-screen w-full flex justify-center items-center bg-white dark:bg-gray-900'>
+                    <h2 className='text-5xl font-bold font-mono text-slate-700 dark:text-white'>No Uploads Yet!</h2>
                 </div>
             )
             :

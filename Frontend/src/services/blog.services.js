@@ -1,10 +1,4 @@
 import {Api} from '../api/Api'
-import { Authorize } from './auth.services'
-
-
-const refreshPage = ()=>{
-    window.location.reload()
-}
 
 class BlogServices{
 
@@ -19,9 +13,7 @@ class BlogServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on fetching user blogs")
             throw error
         }
@@ -34,9 +26,7 @@ class BlogServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on fetching All blogs")
             throw error
         }
@@ -54,9 +44,7 @@ class BlogServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error getting the Blog")
             throw error
         }
@@ -89,9 +77,7 @@ class BlogServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on uploading Blog")
             throw error
         }
@@ -105,9 +91,7 @@ class BlogServices{
             return response
             
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on deleting")
             throw error
         }
@@ -121,9 +105,7 @@ class BlogServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on toggling Status")
             throw error
         }
@@ -137,9 +119,7 @@ class BlogServices{
             return response
 
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on Editing blog")
             throw error
         }
@@ -164,9 +144,7 @@ class BlogServices{
             return response
             
         } catch (error) {
-            if (error.response.data.statusCode == 401){
-                refreshPage()
-            }
+
             console.log("Error on updating Image")
             throw error
         }

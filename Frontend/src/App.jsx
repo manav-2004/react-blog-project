@@ -4,10 +4,10 @@ import {useDispatch} from 'react-redux'
 import { login, logout } from "./features/authSlice"
 import {Outlet, useLocation } from "react-router-dom"
 import { Footer, Header, Loader } from "./components"
-import UserProfile from "./pages/UserProfile"
 import { Bounce, ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import 'remixicon/fonts/remixicon.css'
+import DarkModeToggle from "./components/DarkModeToggle"
 
 
 // The entire React component tree is reevaluated 
@@ -18,6 +18,8 @@ function App() {
 
   const [status, setStatus] = useState(false);
 
+  const [theme, setTheme] = useState("light")
+
   const [showWarmUpMessage, setShowWarmUpMessage] = useState(false)
 
   const dispatch = useDispatch()
@@ -25,6 +27,12 @@ function App() {
   const location = useLocation()
 
   useEffect(()=>{
+
+    const val = window.localStorage.getItem("theme")
+
+    if (val){
+      setTheme(val)
+    }
 
     Authorize.getUser()
     .then((res)=>{
@@ -42,6 +50,15 @@ function App() {
 
   useEffect(()=>{
 
+    window.localStorage.setItem("theme", theme)
+    
+    document.querySelector('html').classList.remove("light", "dark")
+    document.querySelector('html').classList.add(theme)
+  
+  },[theme])
+
+  useEffect(()=>{
+ 
     Authorize.toggleStatus({status})
 
   },[status])
@@ -105,7 +122,7 @@ function App() {
         transition: Bounce
       />
 
-      <div className="w-full block">
+      <div className="w-full block dark:bg-gray-900">
         {renderHeaderAndFooter && <Header/>}
         <main>
           <Outlet/>

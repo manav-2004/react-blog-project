@@ -10,7 +10,7 @@ function Select({
   return (
     <div className='w-full mt-10'>
         <select className={`px-3 py-2 rounded-lg bg-white text-black outline-none
-                focus:bg-slate-50 duration-200 border border-gray-200 w-full ${className}`}
+                focus:bg-slate-50 duration-200 border border-gray-200 w-full dark:text-white dark:bg-gray-900 dark:border-gray-700 ${className}`}
                 ref={ref} {...props}>
             {
                 options?.map((option)=>(

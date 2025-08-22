@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     username : {
         type : String,
-        required : true,
+        default : "",
         lowercase : true,
         unique : true,
         trim : true,
@@ -26,10 +26,10 @@ const userSchema = new mongoose.Schema({
     },
     password : {
         type : String,
-        required : [true,"password is required"]
     },
     avatar : {
         type : String,
+        default : ""
     },
     blogs : [
         {
@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema({
     status : {
         type : Boolean,
         default : false
+    },
+    passwordSet : {
+        type : Boolean,
+        required : true
     }
 
 },{timestamps : true})

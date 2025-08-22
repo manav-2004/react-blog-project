@@ -36,24 +36,24 @@ function Card({
   },[])
 
   return (
-      <div className='w-[260px] h-[350px] shadow-md shadow-slate-400 rounded-lg flex flex-col overflow-hidden cursor-pointer'>
-        <div className='w-full overflow-hidden h-[45%]' onClick={()=>{navigate(`/blog/${id}`)}}><img src={image} alt="" /></div>
+  <div className='w-[260px] h-[350px] shadow-md shadow-slate-400  rounded-lg flex flex-col overflow-hidden cursor-pointer bg-white dark:bg-gray-900 dark:shadow-md dark:shadow-gray-800'>
+        <div className='w-full overflow-hidden h-[45%] dark:bg-gray-800' onClick={()=>{navigate(`/blog/${id}`)}}><img src={image} alt="" /></div>
         <div className='h-[55%] w-full flex flex-col p-2 px-3 gap-2'>
           <div>
-          <p className={`text-[11px] text-white px-4 rounded-lg inline-block ${color[category]}`}>{category}</p>
+          <p className={`text-[11px] text-white px-4 rounded-lg inline-block ${color[category]} dark:bg-gray-700`}>{category}</p>
           </div>
-          <h1 className='font-mono text-xl font-semibold text-slate-800 mt-1' onClick={()=>{navigate(`/blog/${id}`)}}>{title[0].toUpperCase() + title.slice(1,title.length)}</h1>
-          <p className='text-sm font-bold text-slate-700 tracking-tighter min-h-10' onClick={()=>{navigate(`/blog/${id}`)}}>{content[0]?.toUpperCase()+content.slice(1,Math.min(50,content.length))} ...</p>
+          <h1 className='font-mono text-xl font-semibold text-slate-800 dark:text-white mt-1' onClick={()=>{navigate(`/blog/${id}`)}}>{title[0].toUpperCase() + title.slice(1,title.length)}</h1>
+          <p className='text-sm font-bold text-slate-700 dark:text-gray-300 tracking-tighter min-h-10' onClick={()=>{navigate(`/blog/${id}`)}}>{content[0]?.toUpperCase()+content.slice(1,Math.min(50,content.length))} ...</p>
           <div className={`flex ${ownerImage ? 'justify-start':'justify-end'} mt-4 w-full items-center`}>
             {
               ownerImage ? (
                 <div className='flex gap-2'>
-                  <img src={ownerImage} className='rounded-full h-10 aspect-square' onClick={()=>{userId && navigate(`/user-profile/${userId}`)}}/>
-                  <h2 className='text-slate-600'>{fullname[0].toUpperCase()+fullname.slice(1,fullname.length)}</h2>
+                  <img src={ownerImage} className='rounded-full h-10 aspect-square border dark:border-gray-700' onClick={()=>{userId && navigate(`/user-profile/${userId}`)}}/>
+                  <h2 className='text-slate-600 dark:text-gray-400'>{fullname[0].toUpperCase()+fullname.slice(1,fullname.length)}</h2>
                 </div>
               ):(
                 <button onClick={()=>{deletePost(id)}}>
-                  <i className="ri-delete-bin-5-line text-2xl font-medium"></i>
+                  <i className="ri-delete-bin-5-line text-2xl font-medium dark:text-red-400"></i>
                 </button>
               )
             }

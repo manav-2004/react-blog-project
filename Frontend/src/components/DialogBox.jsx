@@ -9,7 +9,7 @@ function DialogBox({
     <div
         className={`w-full h-[50vh] absolute z-30 flex justify-center items-end top-0 left-0`}
     >
-        <div className='w-[300px] shadow-lg shadow-slate-400 rounded-lg py-4 px-6 font-mono font-semibold text-slate-700 flex flex-col gap-4 bg-white'>
+        <div className='w-[300px] shadow-lg shadow-slate-400 dark:shadow-gray-900 rounded-lg py-4 px-6 font-mono font-semibold text-slate-700 dark:text-white flex flex-col gap-4 bg-white dark:bg-gray-900'>
             <h1>{content[0].toUpperCase() + content.slice(1,content.length)}</h1>
             <div className='flex gap-2 justify-end'>
                 <button className='bg-cyan-600 text-white font-semibold py-1 px-2 rounded-md' onClick={trueFn}>Yes</button>
