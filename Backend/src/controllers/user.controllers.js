@@ -84,7 +84,8 @@ const registerUser = asyncHandler(async(req, res)=>{
         username,
         password,
         email,
-        passwordSet : true
+        passwordSet : true,
+        authType : 'normal'
     })
 
     const registeredUser = await User.findById(_user._id).select(
@@ -129,7 +130,8 @@ const googleRegister = asyncHandler(async (req, res)=>{
     let user = await User.create({
         fullname : data.name,
         email : data.email,
-        passwordSet : false,    
+        passwordSet : false,
+        authType : 'google'  
     })
 
 

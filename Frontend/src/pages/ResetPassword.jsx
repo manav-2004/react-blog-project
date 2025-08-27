@@ -117,8 +117,8 @@ function ResetPassword() {
               </div>
           ) : (
             <div className='w-full h-screen flex justify-center items-center flex-col gap-6'>
-              <h1 className='text-8xl'>404</h1>
-              <h1 className='text-3xl font-semibold'>Oops... Page Not Found</h1>
+              <h1 className='text-8xl dark:text-white'>404</h1>
+              <h1 className='text-3xl font-semibold dark:text-white'>Oops... Page Not Found</h1>
             </div>
           )
         }

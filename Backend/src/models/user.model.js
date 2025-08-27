@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema({
     passwordSet : {
         type : Boolean,
         required : true
+    },
+    authType : {
+        type : String,
+        enum : ['normal', 'google']
     }
 
 },{timestamps : true})

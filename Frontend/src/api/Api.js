@@ -34,7 +34,7 @@ export class Api {
 
                         console.log(error)
 
-                        if (window.location.pathname !== "/"){
+                        if (window.location.pathname !== "/" && !window.location.pathname.startsWith('/reset-password')){
                             window.location.href = "/"
                         }
                         
