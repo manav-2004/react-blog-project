@@ -99,6 +99,12 @@ const registerUser = asyncHandler(async(req, res)=>{
 
 })
 
+const reboot = asyncHandler(async (req, res)=>{
+    res.json(
+        new ApiResponse(200, {}, "server running")
+    )
+})
+
 
 const googleRegister = asyncHandler(async (req, res)=>{
 
@@ -682,7 +688,8 @@ export{
     verifyToken,
     resetPassword,
     googleLogin,
-    googleRegister
+    googleRegister,
+    reboot
 }
 
 

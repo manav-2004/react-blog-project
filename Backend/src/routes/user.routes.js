@@ -16,12 +16,14 @@ import {
         verifyToken,
         resetPassword,
         googleLogin,
-        googleRegister
+        googleRegister,
+        reboot
 } from "../controllers/user.controllers.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
 const router = Router()
 
+router.route("/reboot").get(reboot)
 
 router.route("/register").post(upload.single("avatar"),registerUser)
 
